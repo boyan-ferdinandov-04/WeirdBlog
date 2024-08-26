@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using WeirdBlog.DataAccess.Data;
+using WeirdBlog.Service;
 
 
 namespace WeirdBlog
@@ -12,6 +13,7 @@ namespace WeirdBlog
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddDbContext<WeirdBlogDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
