@@ -6,7 +6,7 @@ namespace WeirdBlog.Models
     public class Category
     {
         [Key]
-        public int Id { get; set; }
+        public int CategoryId { get; set; }
         [Required]
         [StringLength(StaticConstants.CategoryNameMaxLength)]
         public string Name { get; set; }
