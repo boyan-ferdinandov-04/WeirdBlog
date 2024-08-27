@@ -14,6 +14,7 @@ namespace WeirdBlog
             // Add services to the container.
             builder.Services.AddControllersWithViews();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
+            builder.Services.AddScoped<IPostService, PostService>();
             builder.Services.AddDbContext<WeirdBlogDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WeirdBlog.Utility;
 
 namespace WeirdBlog.Models
@@ -21,10 +17,13 @@ namespace WeirdBlog.Models
         [Required]
         public string Content { get; set; } 
 
+        public string ImageUrl { get; set; }
+
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         public int CategoryId { get; set; }
         [ForeignKey("CategoryId")]
+        [ValidateNever]
         public Category Category { get; set; }
 
         

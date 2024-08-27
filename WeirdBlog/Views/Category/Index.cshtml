@@ -24,7 +24,7 @@
             <th>Name</th>
         </tr>
         <tbody>
-            @foreach (var item in Model)
+            @foreach (var item in Model.OrderBy(c => c.Name))
             {
                 <tr>
                     <td>@item.CategoryId</td>
