@@ -23,6 +23,16 @@ namespace WeirdBlog.Controllers
             return View(posts);
         }
 
+        public IActionResult Details(Guid id)
+        {
+            var post = _postService.GetPost(id);
+            if (post == null)
+            {
+                return NotFound();
+            }
+            return View(post);
+        }
+
         public IActionResult Create()
         {
             PostVM postVM = new PostVM()
@@ -50,6 +60,53 @@ namespace WeirdBlog.Controllers
                 Value = c.CategoryId.ToString()
             });
             return View(postVM);
+        }
+
+        public IActionResult Edit(Guid id)
+        {
+            var post = _postService.GetPost(id);
+            if (post == null)
+            {
+                return NotFound();
+            }
+            PostVM postVM = new PostVM()
+            {
+                Post = post,
+                Categories = _categoryService.GetCategories().Select(c => new SelectListItem
+                {
+                    Text = c.Name,
+                    Value = c.CategoryId.ToString()
+                })
+            };
+            return View(postVM);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(PostVM obj)
+        {
+            _postService.Edit(obj.Post);
+            return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var post = _postService.GetPost(id);
+            if (post == null)
+            {
+                return NotFound();
+            }
+            return View(post);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        {
+            await _postService.Delete(id);
+            return RedirectToAction("Index");
         }
     }
 }

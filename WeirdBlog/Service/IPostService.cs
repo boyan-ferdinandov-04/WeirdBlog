@@ -6,5 +6,8 @@ namespace WeirdBlog.Service
     {
         void CreatePost(Post post);
         List<Post> GetAllPosts();
+        Task<Post> Edit(Post post);
+        Task<bool> Delete(Guid id);
+        Post? GetPost(Guid id);
     }
 }

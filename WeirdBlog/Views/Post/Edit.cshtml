@@ -1,0 +1,72 @@
+﻿@model PostVM
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1 class="text-white py-2">Update Product</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-10">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            <input asp-for="Post.Guid" type="hidden" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group mb-4">
+                <label asp-for="Post.Title" class="control-label"></label>
+                <div class="col-12">
+                    <input asp-for="Post.Title" class="form-control form-control-lg w-100" aria-required="true" />
+                    <span asp-validation-for="Post.Title" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group mb-4">
+                <label asp-for="Post.Content" class="control-label"></label>
+                <div class="col-12">
+                    <textarea asp-for="Post.Content" class="form-control form-control-lg w-100" rows="8" aria-required="true"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group mb-4">
+                <label asp-for="Post.CategoryId" class="control-label"></label>
+                <div class="col-12">
+                    <select asp-for="Post.CategoryId" class="form-control form-control-lg w-100" asp-items="@Model.Categories" aria-required="true">
+                        <option value="">-- Select Category --</option>
+                    </select>
+                    <span asp-validation-for="Post.CategoryId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group mb-4">
+                <label asp-for="Post.ImageUrl" class="control-label"></label>
+                <div class="col-12">
+                    <input asp-for="Post.ImageUrl" class="form-control form-control-lg w-100 border-0 shadow" />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-sm-4">
+                    <input type="submit" value="Update" class="btn btn-warning w-100 btn-lg" />
+                </div>
+                <div class="col-sm-4">
+                    <a asp-action="Index" class="btn btn-secondary w-100 btn-lg">Back to List</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ycheck typography',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+            tinycomments_mode: 'embedded',
+            tinycomments_author: 'Author name',
+        });
+    </script>
+
+    <partial name="_ValidationScriptsPartial" />
+}

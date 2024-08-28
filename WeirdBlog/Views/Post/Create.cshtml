@@ -6,31 +6,44 @@
 <h4 class="text-center">Create Post</h4>
 <hr />
 <div class="row justify-content-center pb-2">
-    <div class="col-md-6">
+    <div class="col-md-10">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
             <div class="mb-4 row">
                 <label asp-for="Post.Title" class="control-label"></label>
-                <input asp-for="Post.Title" class="form-control form-control-lg" />
-                <span asp-validation-for="Post.Title" class="text-danger"></span>
+                <div class="col-12">
+                    <input asp-for="Post.Title" class="form-control form-control-lg w-100" /> 
+                    <span asp-validation-for="Post.Title" class="text-danger"></span>
+                </div>
             </div>
+
             <div class="mb-4 row">
                 <label asp-for="Post.Content" class="control-label"></label>
-                <textarea asp-for="Post.Content" class="form-control form-control-lg" rows="6"></textarea>
-                <span asp-validation-for="Post.Content" class="text-danger"></span>
+                <div class="col-12">
+                    <textarea asp-for="Post.Content" class="form-control form-control-lg w-100" rows="8"></textarea>
+                    <span asp-validation-for="Post.Content" class="text-danger"></span>
+                </div>
             </div>
+
             <div class="mb-4 row">
                 <label asp-for="Post.ImageUrl" class="control-label"></label>
-                <input asp-for="Post.ImageUrl" class="form-control form-control-lg" />
-                <span asp-validation-for="Post.ImageUrl" class="text-danger"></span>
+                <div class="col-12">
+                    <input asp-for="Post.ImageUrl" class="form-control form-control-lg w-100" />
+                    <span asp-validation-for="Post.ImageUrl" class="text-danger"></span>
+                </div>
             </div>
+
             <div class="mb-4 row">
                 <label asp-for="Post.CategoryId" class="control-label"></label>
-                <select asp-for="Post.CategoryId" class="form-control form-control-lg" asp-items="@Model.Categories">
-                    <option value="">--Select Category--</option>
-                </select>
-                <span asp-validation-for="Post.CategoryId" class="text-danger"></span>
+                <div class="col-12">
+                    <select asp-for="Post.CategoryId" class="form-control form-control-lg w-100" asp-items="@Model.Categories">
+                        <option value="">--Select Category--</option>
+                    </select>
+                    <span asp-validation-for="Post.CategoryId" class="text-danger"></span>
+                </div>
             </div>
+
             <div class="row">
                 <div class="col-sm-6">
                     <button type="submit" class="btn btn-success btn-lg w-100">Create</button>
