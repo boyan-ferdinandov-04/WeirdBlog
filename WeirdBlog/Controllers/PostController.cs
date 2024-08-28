@@ -19,8 +19,8 @@ namespace WeirdBlog.Controllers
 
         public IActionResult Index()
         {
-            
-            return View();
+            var posts = _postService.GetAllPosts();
+            return View(posts);
         }
 
         public IActionResult Create()
