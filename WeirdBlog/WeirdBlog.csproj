@@ -7,7 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\js\theme-toggle.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <_ContentIncludedByDefault Remove="wwwroot\css\index.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\js\theme-toggle.js" />
   </ItemGroup>
 
   <ItemGroup>

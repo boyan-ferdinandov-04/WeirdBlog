@@ -1,8 +1,26 @@
-﻿@{
+﻿@model List<Post>
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Latest Posts</h1>
+    
+</div>
+<link rel="stylesheet" href="~/css/index.css">
+<div class="container">
+    @foreach (var post in Model.OrderByDescending(p => p.CreatedAt).Take(1))
+    {
+        <div class="post-item">
+            <img src="@post.ImageUrl" alt="Cover Photo">
+            <div class="post-content">
+                <h2 class="post-title">
+                    <a asp-action="Details" asp-controller="Post" asp-route-id="@post.Guid">@post.Title</a>
+                </h2>
+                <h3 class="post-item">
+                    <i class="bi bi-clock-history"></i> @post.CreatedAt.ToString("g");
+                </h3>
+            </div>
+        </div>
+    }
 </div>
