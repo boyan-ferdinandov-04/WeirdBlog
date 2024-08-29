@@ -9,5 +9,9 @@ namespace WeirdBlog.Models.ViewModels
 
         [ValidateNever]
         public IEnumerable<SelectListItem> Categories { get; set; }
+        [ValidateNever]
+        public string SearchTitle { get; set; }
+        [ValidateNever]
+        public int? SelectedCategoryId { get; set; }
     }
 }

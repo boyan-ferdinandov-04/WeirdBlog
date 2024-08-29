@@ -1,4 +1,4 @@
-﻿@model List<Post>
+﻿@model WeirdBlog.Models.ViewModels.PostVM
 
 @{
     ViewBag.Title = "Index";
@@ -6,15 +6,40 @@
 <link rel="stylesheet" href="~/css/index.css">
 <div class="text-center">
     <h1 class="display-4">All Posts</h1>
-
 </div>
+
 <div class="container">
+    <form asp-action="Index" method="get">
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <input type="text" name="SearchTitle" class="form-control" placeholder="Search by Title" value="@Model.SearchTitle" />
+            </div>
+            <div class="col-md-4">
+                <select name="SelectedCategoryId" class="form-control">
+                    <option value="">Select Category</option>
+                    @foreach (var category in Model.Categories)
+                    {
+                        <option value="@category.Value @(category.Value == Model.SelectedCategoryId.ToString() ? "selected" : "")">
+                            @category.Text
+                        </option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </div>
+    </form>
+
     <div class="row">
         <div class="col-12 text-end">
-            <a asp-controller="Post" asp-action="Create" class="btn btn-primary"><i class="bi bi-pencil"></i> Write your post</a>
+            <a asp-controller="Post" asp-action="Create" class="btn btn-primary">
+                <i class="bi bi-pencil"></i> Write your post
+            </a>
         </div>
     </div>
-    @foreach (var post in Model)
+
+    @foreach (var post in ViewBag.Posts as List<WeirdBlog.Models.Post>)
     {
         <div class="post-item">
             <img src="@post.ImageUrl" alt="Cover Photo">
@@ -23,7 +48,7 @@
                     <a asp-action="Details" asp-controller="Post" asp-route-id="@post.Guid">@post.Title</a>
                 </h2>
                 <h3 class="post-item">
-                    <i class="bi bi-clock-history"></i> @post.CreatedAt.ToString("g").Trim(';');
+                    <i class="bi bi-clock-history"></i> @post.CreatedAt.ToString("g").Trim(';')
                 </h3>
                 <div class="w-75 btn-group" role="group">
                     <a asp-controller="Post" asp-action="Edit" asp-route-id="@post.Guid" class="btn btn-primary mx-2">

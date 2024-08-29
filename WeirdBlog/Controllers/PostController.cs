@@ -17,11 +17,31 @@ namespace WeirdBlog.Controllers
             _categoryService = categoryService;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(PostVM postVM)
         {
             var posts = _postService.GetAllPosts();
-            return View(posts);
+
+            if (!string.IsNullOrEmpty(postVM.SearchTitle))
+            {
+                posts = posts.Where(p => p.Title.Contains(postVM.SearchTitle, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+            if (postVM.SelectedCategoryId.HasValue && postVM.SelectedCategoryId.Value > 0)
+            {
+                posts = posts.Where(p => p.CategoryId == postVM.SelectedCategoryId.Value).ToList();
+            }
+
+            postVM.Categories = _categoryService.GetCategories().Select(c => new SelectListItem
+            {
+                Text = c.Name,
+                Value = c.CategoryId.ToString()
+            });
+
+            ViewBag.Posts = posts;
+            return View(postVM);
         }
+
+
 
         public IActionResult Details(Guid id)
         {
