@@ -41,6 +41,24 @@ namespace WeirdBlog.Service
             return _context.Posts.ToList();
         }
 
+        public async Task<PaginatedList<Post>> GetPaginatedPostsAsync(int pageIndex, int pageSize, string searchTitle = null, int? selectedCategoryId = null)
+        {
+            var query = _context.Posts.Include(p => p.Category).OrderByDescending(p => p.CreatedAt).AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchTitle))
+            {
+                query = query.Where(p => p.Title.ToLower().Contains(searchTitle.ToLower()));
+            }
+
+            if (selectedCategoryId.HasValue && selectedCategoryId.Value > 0)
+            {
+                query = query.Where(p => p.CategoryId == selectedCategoryId.Value);
+            }
+
+            return await PaginatedList<Post>.CreateAsync(query.AsNoTracking(), pageIndex, pageSize);
+        }
+
+
         public Post? GetPost(Guid id)
         {
             return _context.Posts.Include(p => p.Category).FirstOrDefault(p => p.Guid == id);
