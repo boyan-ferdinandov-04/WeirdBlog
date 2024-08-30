@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using WeirdBlog.Models;
 
 namespace WeirdBlog.DataAccess.Data
 {
-    public class WeirdBlogDbContext : DbContext
+    public class WeirdBlogDbContext : IdentityDbContext<IdentityUser>
     {
         public WeirdBlogDbContext(DbContextOptions<WeirdBlogDbContext> options) : base(options)
         {
@@ -17,6 +19,7 @@ namespace WeirdBlog.DataAccess.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<CategoryEighteen>().HasData(
                 new CategoryEighteen { CategoryEighteenId = 1 ,Name = "Animated"},
                 new CategoryEighteen { CategoryEighteenId = 2 ,Name = "Live-Action"}

@@ -17,7 +17,7 @@ namespace WeirdBlog.Controllers
             _categoryService = categoryService;
         }
 
-        public async Task<IActionResult> Index(PostVM postVM, int pageIndex = 1, int pageSize = 3)
+        public async Task<IActionResult> Index(PostVM postVM, int pageIndex = 1, int pageSize = 5)
         {
             postVM.Categories = _categoryService.GetCategories().Select(c => new SelectListItem
             {

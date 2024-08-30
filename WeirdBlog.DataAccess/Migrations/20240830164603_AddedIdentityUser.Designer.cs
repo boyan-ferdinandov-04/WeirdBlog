@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WeirdBlog.DataAccess.Data;
 
@@ -11,9 +12,11 @@ using WeirdBlog.DataAccess.Data;
 namespace WeirdBlog.DataAccess.Migrations
 {
     [DbContext(typeof(WeirdBlogDbContext))]
-    partial class WeirdBlogDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240830164603_AddedIdentityUser")]
+    partial class AddedIdentityUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

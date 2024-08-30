@@ -9,10 +9,25 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/WeirdBlog.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        main {
+            flex: 1;
+        }
+
+        footer {
+            padding: 1rem 0;
+        }
+    </style>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg bg-primary" style="background-color: #FF5733" data-bs-theme="dark">
+        <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">WeirdBlog</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarColor01"
@@ -37,6 +52,9 @@
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                     </ul>
+                    <div class="d-flex align-items-center">
+                        <partial name="_LoginPartial" />
+                    </div>
                 </div>
             </div>
         </nav>
