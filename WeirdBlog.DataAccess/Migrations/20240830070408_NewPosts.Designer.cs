@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WeirdBlog.DataAccess.Data;
 
@@ -11,9 +12,11 @@ using WeirdBlog.DataAccess.Data;
 namespace WeirdBlog.DataAccess.Migrations
 {
     [DbContext(typeof(WeirdBlogDbContext))]
-    partial class WeirdBlogDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240830070408_NewPosts")]
+    partial class NewPosts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -55,19 +58,7 @@ namespace WeirdBlog.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CategoriesEighteen");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Animated"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Live-Action"
-                        });
+                    b.ToTable("CategoryEighteen");
                 });
 
             modelBuilder.Entity("WeirdBlog.Models.Post", b =>

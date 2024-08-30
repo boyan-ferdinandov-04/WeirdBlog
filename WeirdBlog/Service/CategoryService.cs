@@ -37,6 +37,11 @@ namespace WeirdBlog.Service
             return category;
         }
 
+        public List<CategoryEighteen> GetAllCategoriesEighteen()
+        {
+            return _context.CategoriesEighteen.ToList();
+        }
+
         public List<Category> GetCategories()
         {
             return _context.Categories.ToList();

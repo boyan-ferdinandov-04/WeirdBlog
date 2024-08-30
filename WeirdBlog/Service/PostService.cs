@@ -17,6 +17,12 @@ namespace WeirdBlog.Service
             _context.SaveChanges();
         }
 
+        public void CreatePostEighteen(PostEighteen postEighteen)
+        {
+            _context.PostsEighteen.Add(postEighteen);
+            _context.SaveChanges();
+        }
+
         public async Task<bool> Delete(Guid id)
         {
             var product = await _context.Posts.FindAsync(id);
@@ -36,9 +42,31 @@ namespace WeirdBlog.Service
             return post;
         }
 
+        public async Task<PostEighteen> EditPost(PostEighteen post)
+        {
+            _context.PostsEighteen.Update(post);
+            await _context.SaveChangesAsync();
+            return post;
+        }
+
         public List<Post> GetAllPosts()
         {
             return _context.Posts.ToList();
+        }
+
+        public async Task<PaginatedList<PostEighteen>> GetPaginatedPosts(int pageIndex, int pageSize, string searchTitle = null, int? selectedCategoryId = null)
+        {
+            var query = _context.PostsEighteen.Include(p => p.CategoryEighteen).OrderByDescending(p => p.CreatedAt).AsQueryable();
+            if (!string.IsNullOrEmpty(searchTitle))
+            {
+                query = query.Where(p => p.Title.ToLower().Contains(searchTitle.ToLower()));
+            }
+
+            if (selectedCategoryId.HasValue && selectedCategoryId.Value > 0)
+            {
+                query = query.Where(p => p.CategoryEighteenId == selectedCategoryId.Value);
+            }
+            return await PaginatedList<PostEighteen>.CreateAsync(query.AsNoTracking(), pageIndex, pageSize);
         }
 
         public async Task<PaginatedList<Post>> GetPaginatedPostsAsync(int pageIndex, int pageSize, string searchTitle = null, int? selectedCategoryId = null)
@@ -61,8 +89,17 @@ namespace WeirdBlog.Service
 
         public Post? GetPost(Guid id)
         {
-            return _context.Posts.Include(p => p.Category).FirstOrDefault(p => p.Guid == id);
+            return _context.Posts.Include(p => p.Category).FirstOrDefault(p => p.PostId == id);
         }
 
+        public PostEighteen? GetPostEighteen(Guid id)
+        {
+            return _context.PostsEighteen.Include(p => p.CategoryEighteen).FirstOrDefault(p => p.PostEighteenId == id);
+        }
+
+        public List<PostEighteen> GetPosts()
+        {
+            return _context.PostsEighteen.ToList();
+        }
     }
 }

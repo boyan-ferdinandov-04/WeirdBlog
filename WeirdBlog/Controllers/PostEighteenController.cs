@@ -6,26 +6,25 @@ using WeirdBlog.Service;
 
 namespace WeirdBlog.Controllers
 {
-    public class PostController : Controller
+    public class PostEighteenController : Controller
     {
-        private readonly IPostService _postService;
-        private readonly ICategoryService _categoryService;
-
-        public PostController(IPostService postService, ICategoryService categoryService)
-        {
+        public ICategoryService _categoryService;
+        public IPostService _postService;
+        public PostEighteenController(ICategoryService categoryService,IPostService postService)
+        { 
+        
+            _categoryService = categoryService; 
             _postService = postService;
-            _categoryService = categoryService;
         }
-
-        public async Task<IActionResult> Index(PostVM postVM, int pageIndex = 1, int pageSize = 3)
+        public async Task<IActionResult> Index(PostEighteenVM postVM, int pageIndex = 1, int pageSize = 3)
         {
-            postVM.Categories = _categoryService.GetCategories().Select(c => new SelectListItem
+            postVM.Categories = _categoryService.GetAllCategoriesEighteen().Select(c => new SelectListItem
             {
                 Text = c.Name,
-                Value = c.CategoryId.ToString()
+                Value = c.Id.ToString()
             });
 
-            var posts = await _postService.GetPaginatedPostsAsync(pageIndex, pageSize, postVM.SearchTitle, postVM.SelectedCategoryId);
+            var posts = await _postService.GetPaginatedPosts(pageIndex, pageSize, postVM.SearchTitle, postVM.SelectedCategoryId);
 
             ViewBag.Posts = posts;
             return View(postVM);
@@ -33,7 +32,7 @@ namespace WeirdBlog.Controllers
 
         public IActionResult Details(Guid id)
         {
-            var post = _postService.GetPost(id);
+            var post = _postService.GetPostEighteen(id);
             if (post == null)
             {
                 return NotFound();
@@ -43,57 +42,57 @@ namespace WeirdBlog.Controllers
 
         public IActionResult Create()
         {
-            PostVM postVM = new PostVM()
+            PostEighteenVM postVM = new PostEighteenVM()
             {
-                Post = new Post(),
-                Categories = _categoryService.GetCategories().Select(c => new SelectListItem
+                Post = new PostEighteen(),
+                Categories = _categoryService.GetAllCategoriesEighteen().Select(c => new SelectListItem
                 {
                     Text = c.Name,
-                    Value = c.CategoryId.ToString()
+                    Value = c.Id.ToString()
                 })
             };
             return View(postVM);
         }
 
         [HttpPost]
-        public IActionResult Create(PostVM postVM)
+        public IActionResult Create(PostEighteenVM postVM)
         {
             if (ModelState.IsValid)
             {
-                _postService.CreatePost(postVM.Post);
+                _postService.CreatePostEighteen(postVM.Post);
                 return RedirectToAction("Index");
             }
-            postVM.Categories = _categoryService.GetCategories().Select(c => new SelectListItem
+            postVM.Categories = _categoryService.GetAllCategoriesEighteen().Select(c => new SelectListItem
             {
                 Text = c.Name,
-                Value = c.CategoryId.ToString()
+                Value = c.Id.ToString()
             });
             return View(postVM);
         }
 
         public IActionResult Edit(Guid id)
         {
-            var post = _postService.GetPost(id);
+            var post = _postService.GetPostEighteen(id);
             if (post == null)
             {
                 return NotFound();
             }
-            PostVM postVM = new PostVM()
+            PostEighteenVM postVM = new PostEighteenVM()
             {
                 Post = post,
-                Categories = _categoryService.GetCategories().Select(c => new SelectListItem
+                Categories = _categoryService.GetAllCategoriesEighteen().Select(c => new SelectListItem
                 {
                     Text = c.Name,
-                    Value = c.CategoryId.ToString()
+                    Value = c.Id.ToString()
                 })
             };
             return View(postVM);
         }
 
         [HttpPost]
-        public IActionResult Edit(PostVM obj)
+        public IActionResult Edit(PostEighteenVM obj)
         {
-            _postService.Edit(obj.Post);
+            _postService.EditPost(obj.Post);
             return RedirectToAction("Index");
         }
 
@@ -103,7 +102,7 @@ namespace WeirdBlog.Controllers
             {
                 return NotFound();
             }
-            var post = _postService.GetPost(id);
+            var post = _postService.GetPostEighteen(id);
             if (post == null)
             {
                 return NotFound();

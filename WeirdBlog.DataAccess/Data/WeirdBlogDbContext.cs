@@ -12,5 +12,15 @@ namespace WeirdBlog.DataAccess.Data
 
         public DbSet<Category> Categories { get; set; }
         public DbSet<Post> Posts { get; set; }
+        public DbSet<PostEighteen> PostsEighteen { get; set; }
+        public DbSet<CategoryEighteen> CategoriesEighteen { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<CategoryEighteen>().HasData(
+                new CategoryEighteen { Id = 1 ,Name = "Animated"},
+                new CategoryEighteen { Id = 2 ,Name = "Live-Action"}
+                );
+        }
     }
 }

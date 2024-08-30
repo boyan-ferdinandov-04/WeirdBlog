@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WeirdBlog.DataAccess.Data;
 
@@ -11,9 +12,11 @@ using WeirdBlog.DataAccess.Data;
 namespace WeirdBlog.DataAccess.Migrations
 {
     [DbContext(typeof(WeirdBlogDbContext))]
-    partial class WeirdBlogDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240830065833_PostEighteen")]
+    partial class PostEighteen
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,36 +41,6 @@ namespace WeirdBlog.DataAccess.Migrations
                     b.HasKey("CategoryId");
 
                     b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("WeirdBlog.Models.CategoryEighteen", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CategoriesEighteen");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Animated"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Live-Action"
-                        });
                 });
 
             modelBuilder.Entity("WeirdBlog.Models.Post", b =>
@@ -102,41 +75,6 @@ namespace WeirdBlog.DataAccess.Migrations
                     b.ToTable("Posts");
                 });
 
-            modelBuilder.Entity("WeirdBlog.Models.PostEighteen", b =>
-                {
-                    b.Property<Guid>("PostEighteenId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("CategoryEighteenId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("PostEighteenId");
-
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("PostsEighteen");
-                });
-
             modelBuilder.Entity("WeirdBlog.Models.Post", b =>
                 {
                     b.HasOne("WeirdBlog.Models.Category", "Category")
@@ -146,15 +84,6 @@ namespace WeirdBlog.DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("WeirdBlog.Models.PostEighteen", b =>
-                {
-                    b.HasOne("WeirdBlog.Models.CategoryEighteen", "CategoryEighteen")
-                        .WithMany()
-                        .HasForeignKey("CategoryId");
-
-                    b.Navigation("CategoryEighteen");
                 });
 #pragma warning restore 612, 618
         }

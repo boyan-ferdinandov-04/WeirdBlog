@@ -1,31 +1,29 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 using WeirdBlog.Utility;
 
 namespace WeirdBlog.Models
 {
-    public class Post
+    public class PostEighteen
     {
         [Key]
-        public Guid PostId { get; set; } = Guid.NewGuid();
+        public Guid PostEighteenId { get; set; } = Guid.NewGuid();
 
         [Required]
         [StringLength(StaticConstants.PostTitleMaxLength)]
         public string Title { get; set; }
 
         [Required]
-        public string Content { get; set; } 
+        public string Content { get; set; }
 
         public string ImageUrl { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
-        public int CategoryId { get; set; }
+        public int CategoryEighteenId { get; set; }
         [ForeignKey("CategoryId")]
         [ValidateNever]
-        public Category Category { get; set; }
-
-        
+        public CategoryEighteen CategoryEighteen { get; set; }
     }
 }

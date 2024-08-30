@@ -8,9 +8,9 @@ namespace WeirdBlog.Utility
 {
     public static class StaticConstants
     {
-        public const int CategoryNameMaxLength = 50;
+        public const int CategoryNameMaxLength = 30;
 
 
-        public const int PostTitleMaxLength = 30;
+        public const int PostTitleMaxLength = 50;
     }
 }

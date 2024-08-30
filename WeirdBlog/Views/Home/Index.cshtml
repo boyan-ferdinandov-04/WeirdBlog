@@ -15,7 +15,7 @@
             <img src="@post.ImageUrl" alt="Cover Photo">
             <div class="post-content">
                 <h2 class="post-title">
-                    <a asp-action="Details" asp-controller="Post" asp-route-id="@post.Guid">@post.Title</a>
+                    <a asp-action="Details" asp-controller="Post" asp-route-id="@post.PostId">@post.Title</a>
                 </h2>
                 <h3 class="post-item">
                     <i class="bi bi-clock-history"></i> @post.CreatedAt.ToString("g");
