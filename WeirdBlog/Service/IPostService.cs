@@ -11,6 +11,7 @@ namespace WeirdBlog.Service
         Task<Post> Edit(Post post);
         Task<PostEighteen> EditPost(PostEighteen post);
         Task<bool> Delete(Guid id);
+        Task<bool> DeleteEighteen(Guid id);
         Post? GetPost(Guid id);
         PostEighteen? GetPostEighteen(Guid id);
         Task<PaginatedList<Post>> GetPaginatedPostsAsync(int pageIndex, int pageSize, string searchTitle = null, int? selectedCategoryId = null);

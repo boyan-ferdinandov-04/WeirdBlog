@@ -22,7 +22,7 @@ namespace WeirdBlog.Models
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         public int CategoryEighteenId { get; set; }
-        [ForeignKey("CategoryId")]
+        [ForeignKey("CategoryEighteenId")]
         [ValidateNever]
         public CategoryEighteen CategoryEighteen { get; set; }
     }

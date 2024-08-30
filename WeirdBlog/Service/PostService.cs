@@ -25,12 +25,24 @@ namespace WeirdBlog.Service
 
         public async Task<bool> Delete(Guid id)
         {
-            var product = await _context.Posts.FindAsync(id);
-            if (product == null)
+            var post = await _context.Posts.FindAsync(id);
+            if (post == null)
             {
                 return false;
             }
-            _context.Posts.Remove(product);
+            _context.Posts.Remove(post);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> DeleteEighteen(Guid id)
+        {
+            var postEighteen = await _context.PostsEighteen.FindAsync(id);
+            if (postEighteen == null)
+            {
+                return false;
+            }
+            _context.PostsEighteen.Remove(postEighteen);
             await _context.SaveChangesAsync();
             return true;
         }

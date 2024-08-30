@@ -21,7 +21,7 @@ namespace WeirdBlog.Controllers
             postVM.Categories = _categoryService.GetAllCategoriesEighteen().Select(c => new SelectListItem
             {
                 Text = c.Name,
-                Value = c.Id.ToString()
+                Value = c.CategoryEighteenId.ToString()
             });
 
             var posts = await _postService.GetPaginatedPosts(pageIndex, pageSize, postVM.SearchTitle, postVM.SelectedCategoryId);
@@ -48,7 +48,7 @@ namespace WeirdBlog.Controllers
                 Categories = _categoryService.GetAllCategoriesEighteen().Select(c => new SelectListItem
                 {
                     Text = c.Name,
-                    Value = c.Id.ToString()
+                    Value = c.CategoryEighteenId.ToString()
                 })
             };
             return View(postVM);
@@ -65,7 +65,7 @@ namespace WeirdBlog.Controllers
             postVM.Categories = _categoryService.GetAllCategoriesEighteen().Select(c => new SelectListItem
             {
                 Text = c.Name,
-                Value = c.Id.ToString()
+                Value = c.CategoryEighteenId.ToString()
             });
             return View(postVM);
         }
@@ -83,7 +83,7 @@ namespace WeirdBlog.Controllers
                 Categories = _categoryService.GetAllCategoriesEighteen().Select(c => new SelectListItem
                 {
                     Text = c.Name,
-                    Value = c.Id.ToString()
+                    Value = c.CategoryEighteenId.ToString()
                 })
             };
             return View(postVM);
@@ -113,7 +113,7 @@ namespace WeirdBlog.Controllers
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            await _postService.Delete(id);
+            await _postService.DeleteEighteen(id);
             return RedirectToAction("Index");
         }
     }

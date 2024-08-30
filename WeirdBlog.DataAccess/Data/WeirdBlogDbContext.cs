@@ -18,8 +18,8 @@ namespace WeirdBlog.DataAccess.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<CategoryEighteen>().HasData(
-                new CategoryEighteen { Id = 1 ,Name = "Animated"},
-                new CategoryEighteen { Id = 2 ,Name = "Live-Action"}
+                new CategoryEighteen { CategoryEighteenId = 1 ,Name = "Animated"},
+                new CategoryEighteen { CategoryEighteenId = 2 ,Name = "Live-Action"}
                 );
         }
     }
