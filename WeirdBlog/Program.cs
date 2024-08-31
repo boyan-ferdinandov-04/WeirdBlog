@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using WeirdBlog.DataAccess.Data;
 using WeirdBlog.Service;
 using Microsoft.AspNetCore.Identity;
+using WeirdBlog.Utility;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 
 namespace WeirdBlog
@@ -16,13 +18,15 @@ namespace WeirdBlog
             builder.Services.AddControllersWithViews();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<IPostService, PostService>();
+            builder.Services.AddScoped<IEmailSender, EmailSender>();
+
             builder.Services.AddRazorPages();
             builder.Services.AddDbContext<WeirdBlogDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
 
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<WeirdBlogDbContext>();
+            builder.Services.AddIdentity<IdentityUser,IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<WeirdBlogDbContext>();
 
             var app = builder.Build();
 

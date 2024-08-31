@@ -16,7 +16,7 @@ namespace WeirdBlog.DataAccess.Data
         public DbSet<Post> Posts { get; set; }
         public DbSet<PostEighteen> PostsEighteen { get; set; }
         public DbSet<CategoryEighteen> CategoriesEighteen { get; set; }
-
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
