@@ -36,4 +36,24 @@ textarea {
     color: #ffffff; 
 }
 
+.position-relative {
+    position: relative;
+}
+
+.clear-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    font-size: 16px;
+    color: #aaa;
+    cursor: pointer;
+    display: none;
+}
+
+#searchBox:not(:placeholder-shown) ~ .clear-btn {
+    display: inline;
+}
 

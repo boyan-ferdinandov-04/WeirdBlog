@@ -25,7 +25,10 @@ namespace WeirdBlog
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
-
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Identity/Account/Login";
+            });
             builder.Services.AddIdentity<IdentityUser,IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<WeirdBlogDbContext>();
 
             var app = builder.Build();
@@ -53,5 +56,6 @@ namespace WeirdBlog
 
             app.Run();
         }
+
     }
 }

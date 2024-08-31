@@ -21,8 +21,8 @@ namespace WeirdBlog.DataAccess.Data
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<CategoryEighteen>().HasData(
-                new CategoryEighteen { CategoryEighteenId = 1 ,Name = "Animated"},
-                new CategoryEighteen { CategoryEighteenId = 2 ,Name = "Live-Action"}
+                new CategoryEighteen { CategoryEighteenId = 1, Name = "Animated" },
+                new CategoryEighteen { CategoryEighteenId = 2, Name = "Live-Action" }
                 );
         }
     }
