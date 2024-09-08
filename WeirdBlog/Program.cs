@@ -29,8 +29,15 @@ namespace WeirdBlog
             {
                 options.LoginPath = "/Identity/Account/Login";
             });
-            builder.Services.AddIdentity<IdentityUser,IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<WeirdBlogDbContext>();
+            builder.Services.AddIdentity<IdentityUser,IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<WeirdBlogDbContext>().AddDefaultTokenProviders();
+            builder.Services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
 
+                options.Lockout.MaxFailedAccessAttempts = 8;
+            });
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

@@ -56,7 +56,7 @@ namespace WeirdBlog.Controllers
                     Value = c.CategoryId.ToString()
                 })
             };
-           
+            
             return View(postVM);
         }
 
