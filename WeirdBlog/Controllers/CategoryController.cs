@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WeirdBlog.Models;
 using WeirdBlog.Service;
+using WeirdBlog.Utility;
 
 namespace WeirdBlog.Controllers
 {
@@ -17,9 +19,13 @@ namespace WeirdBlog.Controllers
             var categories = _categoryService.GetCategories();
             return View(categories);
         }
-        
+
         public IActionResult Create()
         {
+            if (!User.IsInRole(StaticConstants.Role_Admin))
+            {
+                return Redirect("/Identity/Account/AccessDenied");
+            }
             return View();
         }
 

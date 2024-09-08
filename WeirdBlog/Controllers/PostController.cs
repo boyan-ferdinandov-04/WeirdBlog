@@ -77,7 +77,7 @@ namespace WeirdBlog.Controllers
             return View(postVM);
         }
 
-        [Authorize(StaticConstants.Role_Admin)]
+        [Authorize(Roles = StaticConstants.Role_Admin)]
         public IActionResult Edit(Guid id)
         {
             var post = _postService.GetPost(id);
@@ -98,14 +98,14 @@ namespace WeirdBlog.Controllers
         }
 
         [HttpPost]
-        [Authorize(StaticConstants.Role_Admin)]
+        [Authorize(Roles = StaticConstants.Role_Admin)]
         public IActionResult Edit(PostVM obj)
         {
             _postService.Edit(obj.Post);
             return RedirectToAction("Index");
         }
 
-        [Authorize(StaticConstants.Role_Admin)]
+        [Authorize(Roles = StaticConstants.Role_Admin)]
         public async Task<IActionResult> Delete(Guid id)
         {
             if (id == null)
@@ -121,7 +121,7 @@ namespace WeirdBlog.Controllers
         }
 
         [HttpPost, ActionName("Delete")]
-        [Authorize(StaticConstants.Role_Admin)]
+        [Authorize(Roles = StaticConstants.Role_Admin)]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             await _postService.Delete(id);

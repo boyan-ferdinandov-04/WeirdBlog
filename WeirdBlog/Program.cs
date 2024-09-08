@@ -20,6 +20,13 @@ namespace WeirdBlog
             builder.Services.AddScoped<IPostService, PostService>();
             builder.Services.AddScoped<IEmailSender, EmailSender>();
 
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Identity/Account/Login";
+                options.LogoutPath = "/Identity/Account/Logout";
+                options.LoginPath = "/Identity/Account/AccessDenied";
+            });
+
             builder.Services.AddRazorPages();
             builder.Services.AddDbContext<WeirdBlogDbContext>(options =>
             {
@@ -38,6 +45,7 @@ namespace WeirdBlog
 
                 options.Lockout.MaxFailedAccessAttempts = 8;
             });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
