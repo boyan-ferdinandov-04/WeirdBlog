@@ -8,6 +8,7 @@ using AspNet.Security.OAuth.Discord;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using System.Globalization;
+using Microsoft.AspNetCore.Authentication.Google;
 
 
 namespace WeirdBlog
@@ -30,8 +31,12 @@ namespace WeirdBlog
                 options.LogoutPath = "/Identity/Account/Logout";
                 options.LoginPath = "/Identity/Account/AccessDenied";
             });
+            builder.Services.AddAuthentication().AddGoogle(options =>
+            {
+                options.ClientId = "111753696304-s3kgnm6b9eq948n45oig4b2b3grp34if.apps.googleusercontent.com";
+                options.ClientSecret = "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";
+            });
 
-            
             builder.Services.AddRazorPages();
             builder.Services.AddDbContext<WeirdBlogDbContext>(options =>
             {
