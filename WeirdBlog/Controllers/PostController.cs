@@ -44,7 +44,7 @@ namespace WeirdBlog.Controllers
             }
             return View(post);
         }
-        [Authorize]
+
         public IActionResult Create()
         {
             PostVM postVM = new PostVM()
@@ -56,6 +56,10 @@ namespace WeirdBlog.Controllers
                     Value = c.CategoryId.ToString()
                 })
             };
+            if (!User.Identity.IsAuthenticated)
+            {
+                return Redirect("/Identity/Account/Login");
+            }
             
             return View(postVM);
         }

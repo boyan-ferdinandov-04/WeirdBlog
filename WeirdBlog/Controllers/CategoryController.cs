@@ -47,6 +47,10 @@ namespace WeirdBlog.Controllers
             {
                 return NotFound();
             }
+            if (!User.IsInRole(StaticConstants.Role_Admin))
+            {
+                return Redirect("/Identity/Account/AccessDenied");
+            }
             return View(category);
         }
 
@@ -67,6 +71,10 @@ namespace WeirdBlog.Controllers
             if (category == null)
             {
                 return NotFound();
+            }
+            if (!User.IsInRole(StaticConstants.Role_Admin))
+            {
+                return Redirect("/Identity/Account/AccessDenied");
             }
             return View(category);
         }

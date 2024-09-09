@@ -4,6 +4,10 @@ using WeirdBlog.Service;
 using Microsoft.AspNetCore.Identity;
 using WeirdBlog.Utility;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using AspNet.Security.OAuth.Discord;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using System.Globalization;
 
 
 namespace WeirdBlog
@@ -27,15 +31,13 @@ namespace WeirdBlog
                 options.LoginPath = "/Identity/Account/AccessDenied";
             });
 
+            
             builder.Services.AddRazorPages();
             builder.Services.AddDbContext<WeirdBlogDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
-            builder.Services.ConfigureApplicationCookie(options =>
-            {
-                options.LoginPath = "/Identity/Account/Login";
-            });
+            
             builder.Services.AddIdentity<IdentityUser,IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<WeirdBlogDbContext>().AddDefaultTokenProviders();
             builder.Services.Configure<IdentityOptions>(options =>
             {
