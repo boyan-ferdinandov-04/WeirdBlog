@@ -33,8 +33,8 @@ namespace WeirdBlog
             });
             builder.Services.AddAuthentication().AddGoogle(options =>
             {
-                options.ClientId = "111753696304-s3kgnm6b9eq948n45oig4b2b3grp34if.apps.googleusercontent.com";
-                options.ClientSecret = "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";
+                options.ClientId = "";
+                options.ClientSecret = "";
             });
 
             builder.Services.AddRazorPages();
