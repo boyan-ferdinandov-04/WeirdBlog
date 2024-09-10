@@ -30,7 +30,10 @@ namespace WeirdBlog
                 options.LogoutPath = "/Identity/Account/Logout";
                 options.LoginPath = "/Identity/Account/AccessDenied";
             });
-
+            builder.Services.AddAuthentication().AddGoogle(options =>
+            {
+               
+            });
             
             builder.Services.AddRazorPages();
             builder.Services.AddDbContext<WeirdBlogDbContext>(options =>
