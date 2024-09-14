@@ -22,4 +22,8 @@
     <ProjectReference Include="..\WeirdBlog.Models\WeirdBlog.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

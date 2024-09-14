@@ -5,7 +5,7 @@ using WeirdBlog.Models;
 
 namespace WeirdBlog.DataAccess.Data
 {
-    public class WeirdBlogDbContext : IdentityDbContext<IdentityUser>
+    public class WeirdBlogDbContext : IdentityDbContext<IdentityUser<Guid>, IdentityRole<Guid>, Guid>
     {
         public WeirdBlogDbContext(DbContextOptions<WeirdBlogDbContext> options) : base(options)
         {

@@ -23,17 +23,17 @@ namespace WeirdBlog.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class ExternalLoginModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly IUserStore<IdentityUser> _userStore;
-        private readonly IUserEmailStore<IdentityUser> _emailStore;
+        private readonly SignInManager<IdentityUser<Guid>> _signInManager;
+        private readonly UserManager<IdentityUser<Guid>> _userManager;
+        private readonly IUserStore<IdentityUser<Guid>> _userStore;
+        private readonly IUserEmailStore<IdentityUser<Guid>> _emailStore;
         private readonly IEmailSender _emailSender;
         private readonly ILogger<ExternalLoginModel> _logger;
 
         public ExternalLoginModel(
-            SignInManager<IdentityUser> signInManager,
-            UserManager<IdentityUser> userManager,
-            IUserStore<IdentityUser> userStore,
+            SignInManager<IdentityUser<Guid>> signInManager,
+            UserManager<IdentityUser<Guid>> userManager,
+            IUserStore<IdentityUser<Guid>> userStore,
             ILogger<ExternalLoginModel> logger,
             IEmailSender emailSender)
         {
@@ -197,11 +197,11 @@ namespace WeirdBlog.Areas.Identity.Pages.Account
             return Page();
         }
 
-        private IdentityUser CreateUser()
+        private IdentityUser<Guid> CreateUser()
         {
             try
             {
-                return Activator.CreateInstance<IdentityUser>();
+                return Activator.CreateInstance<IdentityUser<Guid>>();
             }
             catch
             {
@@ -211,13 +211,13 @@ namespace WeirdBlog.Areas.Identity.Pages.Account
             }
         }
 
-        private IUserEmailStore<IdentityUser> GetEmailStore()
+        private IUserEmailStore<IdentityUser<Guid>> GetEmailStore()
         {
             if (!_userManager.SupportsUserEmail)
             {
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
-            return (IUserEmailStore<IdentityUser>)_userStore;
+            return (IUserEmailStore<IdentityUser<Guid>>)_userStore;
         }
     }
 }

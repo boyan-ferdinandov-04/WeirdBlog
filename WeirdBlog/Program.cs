@@ -4,11 +4,6 @@ using WeirdBlog.Service;
 using Microsoft.AspNetCore.Identity;
 using WeirdBlog.Utility;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using AspNet.Security.OAuth.Discord;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
-using System.Globalization;
-using Microsoft.AspNetCore.Authentication.Google;
 
 
 namespace WeirdBlog
@@ -31,11 +26,11 @@ namespace WeirdBlog
                 options.LogoutPath = "/Identity/Account/Logout";
                 options.LoginPath = "/Identity/Account/AccessDenied";
             });
-            builder.Services.AddAuthentication().AddGoogle(options =>
-            {
-                options.ClientId = "";
-                options.ClientSecret = "";
-            });
+            //builder.Services.AddAuthentication().AddGoogle(options =>
+            //{
+            //    options.ClientId = "";
+            //    options.ClientSecret = "";
+            //});
 
             builder.Services.AddRazorPages();
             builder.Services.AddDbContext<WeirdBlogDbContext>(options =>
@@ -43,7 +38,7 @@ namespace WeirdBlog
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
             
-            builder.Services.AddIdentity<IdentityUser,IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<WeirdBlogDbContext>().AddDefaultTokenProviders();
+            builder.Services.AddIdentity<IdentityUser<Guid>,IdentityRole<Guid>>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<WeirdBlogDbContext>().AddDefaultTokenProviders();
             builder.Services.Configure<IdentityOptions>(options =>
             {
                 options.Password.RequireDigit = false;

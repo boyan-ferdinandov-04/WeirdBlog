@@ -25,19 +25,19 @@ namespace WeirdBlog.Areas.Identity.Pages.Account
 {
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly IUserStore<IdentityUser> _userStore;
-        private readonly IUserEmailStore<IdentityUser> _emailStore;
+        private readonly SignInManager<IdentityUser<Guid>> _signInManager;
+        private readonly RoleManager<IdentityRole<Guid>> _roleManager;
+        private readonly UserManager<IdentityUser<Guid>> _userManager;
+        private readonly IUserStore<IdentityUser<Guid>> _userStore;
+        private readonly IUserEmailStore<IdentityUser<Guid>> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
 
         public RegisterModel(
-            UserManager<IdentityUser> userManager,
-            IUserStore<IdentityUser> userStore,
-            SignInManager<IdentityUser> signInManager,
-            RoleManager<IdentityRole> roleManager,
+            UserManager<IdentityUser<Guid>> userManager,
+            IUserStore<IdentityUser<Guid>> userStore,
+            SignInManager<IdentityUser<Guid>> signInManager,
+            RoleManager<IdentityRole<Guid>> roleManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender)
         {
@@ -114,8 +114,8 @@ namespace WeirdBlog.Areas.Identity.Pages.Account
             if (!_roleManager.RoleExistsAsync(StaticConstants.Role_User).GetAwaiter().GetResult())
             {
 
-                await _roleManager.CreateAsync(new IdentityRole(StaticConstants.Role_Admin));
-                await _roleManager.CreateAsync(new IdentityRole(StaticConstants.Role_User));
+                await _roleManager.CreateAsync(new IdentityRole<Guid>(StaticConstants.Role_Admin));
+                await _roleManager.CreateAsync(new IdentityRole<Guid>(StaticConstants.Role_User));
             }
 
             ReturnUrl = returnUrl;
@@ -169,7 +169,7 @@ namespace WeirdBlog.Areas.Identity.Pages.Account
         }
 
 
-        private ApplicationUser CreateUser()
+        private IdentityUser<Guid> CreateUser()
         {
             try
             {
@@ -183,13 +183,13 @@ namespace WeirdBlog.Areas.Identity.Pages.Account
             }
         }
 
-        private IUserEmailStore<IdentityUser> GetEmailStore()
+        private IUserEmailStore<IdentityUser<Guid>> GetEmailStore()
         {
             if (!_userManager.SupportsUserEmail)
             {
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
-            return (IUserEmailStore<IdentityUser>)_userStore;
+            return (IUserEmailStore<IdentityUser<Guid>>)_userStore;
         }
     }
 }
