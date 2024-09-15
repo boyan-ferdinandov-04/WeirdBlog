@@ -27,7 +27,9 @@ namespace WeirdBlog.Models
         public Category Category { get; set; }
         
         public Guid UserId { get; set; }
+
         [ForeignKey(nameof(UserId))]
+        [ValidateNever]
         public ApplicationUser User { get; set; }
     }
 }

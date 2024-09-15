@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
 using WeirdBlog.Models;
 using WeirdBlog.Models.ViewModels;
 using WeirdBlog.Service;
@@ -70,14 +71,17 @@ namespace WeirdBlog.Controllers
         {
             if (ModelState.IsValid)
             {
+                postVM.Post.UserId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
                 _postService.CreatePost(postVM.Post);
                 return RedirectToAction("Index");
             }
+
             postVM.Categories = _categoryService.GetCategories().Select(c => new SelectListItem
             {
                 Text = c.Name,
                 Value = c.CategoryId.ToString()
             });
+
             return View(postVM);
         }
 
