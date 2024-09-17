@@ -85,7 +85,7 @@ namespace WeirdBlog.Controllers
             return View(postVM);
         }
 
-        [Authorize(Roles = StaticConstants.Role_Admin)]
+        [Authorize]
         public IActionResult Edit(Guid id)
         {
             var post = _postService.GetPost(id);
@@ -93,6 +93,14 @@ namespace WeirdBlog.Controllers
             {
                 return NotFound();
             }
+
+            // Check if the current user is the post author or an admin
+            var currentUserId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            if (post.UserId != currentUserId && !User.IsInRole(StaticConstants.Role_Admin))
+            {
+                return Forbid();
+            }
+
             PostVM postVM = new PostVM()
             {
                 Post = post,
@@ -106,30 +114,31 @@ namespace WeirdBlog.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = StaticConstants.Role_Admin)]
         public IActionResult Edit(PostVM obj)
         {
             _postService.Edit(obj.Post);
             return RedirectToAction("Index");
         }
 
-        [Authorize(Roles = StaticConstants.Role_Admin)]
+        [Authorize]
         public async Task<IActionResult> Delete(Guid id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
             var post = _postService.GetPost(id);
             if (post == null)
             {
                 return NotFound();
             }
+
+            var currentUserId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            if (post.UserId != currentUserId && !User.IsInRole(StaticConstants.Role_Admin))
+            {
+                return Forbid();
+            }
+
             return View(post);
         }
 
         [HttpPost, ActionName("Delete")]
-        [Authorize(Roles = StaticConstants.Role_Admin)]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             await _postService.Delete(id);

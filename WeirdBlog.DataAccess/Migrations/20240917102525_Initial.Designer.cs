@@ -12,7 +12,7 @@ using WeirdBlog.DataAccess.Data;
 namespace WeirdBlog.DataAccess.Migrations
 {
     [DbContext(typeof(WeirdBlogDbContext))]
-    [Migration("20240915222201_Initial")]
+    [Migration("20240917102525_Initial")]
     partial class Initial
     {
         /// <inheritdoc />

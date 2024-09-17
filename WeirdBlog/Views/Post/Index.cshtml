@@ -1,4 +1,5 @@
-﻿@using WeirdBlog.Utility
+﻿@using System.Security.Claims
+@using WeirdBlog.Utility
 @model WeirdBlog.Models.ViewModels.PostVM
 
 @{
@@ -55,7 +56,7 @@
                     <h3 class="post-item">
                         <i class="bi bi-clock-history"></i> @post.CreatedAt.ToString("g").Trim(';')
                     </h3>
-                    @if (User.IsInRole(StaticConstants.Role_Admin))
+                    @if (User.IsInRole(StaticConstants.Role_Admin) || User.FindFirstValue(ClaimTypes.NameIdentifier) == post.UserId.ToString())
                     {
                         <div class="w-75 btn-group" role="group">
                             <a asp-controller="Post" asp-action="Edit" asp-route-id="@post.PostId" class="btn btn-primary mx-2">
