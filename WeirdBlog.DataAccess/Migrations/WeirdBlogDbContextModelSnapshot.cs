@@ -235,6 +235,23 @@ namespace WeirdBlog.DataAccess.Migrations
                     b.HasKey("CategoryId");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryId = 1,
+                            Name = "Action"
+                        },
+                        new
+                        {
+                            CategoryId = 2,
+                            Name = "SciFi"
+                        },
+                        new
+                        {
+                            CategoryId = 3,
+                            Name = "History"
+                        });
                 });
 
             modelBuilder.Entity("WeirdBlog.Models.Post", b =>

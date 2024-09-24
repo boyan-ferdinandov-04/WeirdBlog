@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace WeirdBlog.DataAccess.Migrations
 {
     /// <inheritdoc />
@@ -190,6 +192,16 @@ namespace WeirdBlog.DataAccess.Migrations
                         principalTable: "Categories",
                         principalColumn: "CategoryId",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "CategoryId", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Action" },
+                    { 2, "SciFi" },
+                    { 3, "History" }
                 });
 
             migrationBuilder.CreateIndex(

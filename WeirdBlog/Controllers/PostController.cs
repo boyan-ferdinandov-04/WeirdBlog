@@ -94,7 +94,6 @@ namespace WeirdBlog.Controllers
                 return NotFound();
             }
 
-            // Check if the current user is the post author or an admin
             var currentUserId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             if (post.UserId != currentUserId && !User.IsInRole(StaticConstants.Role_Admin))
             {

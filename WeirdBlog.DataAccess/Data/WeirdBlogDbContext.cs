@@ -19,7 +19,12 @@ namespace WeirdBlog.DataAccess.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            
+            modelBuilder.Entity<Category>().HasData(
+                new Category { CategoryId = 1, Name = "Action"},
+                new Category { CategoryId = 2, Name = "SciFi"},
+                new Category { CategoryId = 3, Name = "History"}
+            );
+
         }
     }
 }
