@@ -25,18 +25,18 @@ namespace WeirdBlog.Areas.Identity.Pages.Account
 {
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<IdentityUser<Guid>> _signInManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<IdentityRole<Guid>> _roleManager;
-        private readonly UserManager<IdentityUser<Guid>> _userManager;
-        private readonly IUserStore<IdentityUser<Guid>> _userStore;
-        private readonly IUserEmailStore<IdentityUser<Guid>> _emailStore;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IUserStore<ApplicationUser> _userStore;
+        private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
 
         public RegisterModel(
-            UserManager<IdentityUser<Guid>> userManager,
-            IUserStore<IdentityUser<Guid>> userStore,
-            SignInManager<IdentityUser<Guid>> signInManager,
+            UserManager<ApplicationUser> userManager,
+            IUserStore<ApplicationUser> userStore,
+            SignInManager<ApplicationUser> signInManager,
             RoleManager<IdentityRole<Guid>> roleManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender)
@@ -105,6 +105,7 @@ namespace WeirdBlog.Areas.Identity.Pages.Account
 
             [Required]
             [StringLength(StaticConstants.UserNameMaxLength, ErrorMessage = "Username cannot be longer that 50 characters!")]
+            [Display(Name = "UserName")]
             public string UserName { get; set; }
         }
 
@@ -128,9 +129,19 @@ namespace WeirdBlog.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = CreateUser();
+                ApplicationUser user = CreateUser();
 
+                if (string.IsNullOrEmpty(Input.UserName))
+                {
+                    ModelState.AddModelError(string.Empty, "UserName is required.");
+                    return Page();
+                }
+
+                user.Email = Input.Email;
+                user.UserName = Input.UserName; 
+                user.NormalizedUserName = Input.UserName;
                 await _userStore.SetUserNameAsync(user, Input.UserName, CancellationToken.None);
+
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
@@ -145,7 +156,7 @@ namespace WeirdBlog.Areas.Identity.Pages.Account
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
                         pageHandler: null,
-                        values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
+                        values: new { userId = userId, code = code },
                         protocol: Request.Scheme);
 
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
@@ -169,27 +180,30 @@ namespace WeirdBlog.Areas.Identity.Pages.Account
         }
 
 
-        private IdentityUser<Guid> CreateUser()
+        private ApplicationUser CreateUser()
         {
             try
             {
-                return Activator.CreateInstance<ApplicationUser>();
+                var user =  Activator.CreateInstance<ApplicationUser>();
+                user.Email = Input.Email;
+                user.UserName = Input.UserName;
+                return user;
             }
             catch
             {
-                throw new InvalidOperationException($"Can't create an instance of '{nameof(IdentityUser)}'. " +
-                    $"Ensure that '{nameof(IdentityUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
+                throw new InvalidOperationException($"Can't create an instance of '{nameof(ApplicationUser)}'. " +
+                    $"Ensure that '{nameof(ApplicationUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
                     $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
             }
         }
 
-        private IUserEmailStore<IdentityUser<Guid>> GetEmailStore()
+        private IUserEmailStore<ApplicationUser> GetEmailStore()
         {
             if (!_userManager.SupportsUserEmail)
             {
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
-            return (IUserEmailStore<IdentityUser<Guid>>)_userStore;
+            return (IUserEmailStore<ApplicationUser>)_userStore;
         }
     }
 }

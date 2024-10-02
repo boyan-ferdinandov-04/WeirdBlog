@@ -9,10 +9,6 @@ namespace WeirdBlog.Models
     [NotMapped]
     public class ApplicationUser:IdentityUser<Guid>
     {
-        [Required]
-        [StringLength(StaticConstants.UserNameMaxLength,ErrorMessage = "Username cannot be longer that 50 characters!")]
-        public string UserName { get; set; }
-
-        public ICollection<Post> Posts { get; set; }
+        public ICollection<Post> Posts { get; set; } = new List<Post>();
     }
 }

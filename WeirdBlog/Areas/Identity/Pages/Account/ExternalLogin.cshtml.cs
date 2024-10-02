@@ -17,23 +17,24 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using WeirdBlog.Models;
 
 namespace WeirdBlog.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class ExternalLoginModel : PageModel
     {
-        private readonly SignInManager<IdentityUser<Guid>> _signInManager;
-        private readonly UserManager<IdentityUser<Guid>> _userManager;
-        private readonly IUserStore<IdentityUser<Guid>> _userStore;
-        private readonly IUserEmailStore<IdentityUser<Guid>> _emailStore;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IUserStore<ApplicationUser> _userStore;
+        private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly IEmailSender _emailSender;
         private readonly ILogger<ExternalLoginModel> _logger;
 
         public ExternalLoginModel(
-            SignInManager<IdentityUser<Guid>> signInManager,
-            UserManager<IdentityUser<Guid>> userManager,
-            IUserStore<IdentityUser<Guid>> userStore,
+            SignInManager<ApplicationUser> signInManager,
+            UserManager<ApplicationUser> userManager,
+            IUserStore<ApplicationUser> userStore,
             ILogger<ExternalLoginModel> logger,
             IEmailSender emailSender)
         {
@@ -197,11 +198,11 @@ namespace WeirdBlog.Areas.Identity.Pages.Account
             return Page();
         }
 
-        private IdentityUser<Guid> CreateUser()
+        private ApplicationUser CreateUser()
         {
             try
             {
-                return Activator.CreateInstance<IdentityUser<Guid>>();
+                return Activator.CreateInstance<ApplicationUser>();
             }
             catch
             {
@@ -211,13 +212,13 @@ namespace WeirdBlog.Areas.Identity.Pages.Account
             }
         }
 
-        private IUserEmailStore<IdentityUser<Guid>> GetEmailStore()
+        private IUserEmailStore<ApplicationUser> GetEmailStore()
         {
             if (!_userManager.SupportsUserEmail)
             {
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
-            return (IUserEmailStore<IdentityUser<Guid>>)_userStore;
+            return (IUserEmailStore<ApplicationUser>)_userStore;
         }
     }
 }

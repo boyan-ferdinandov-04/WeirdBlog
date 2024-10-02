@@ -62,8 +62,14 @@ namespace WeirdBlog.Service
 
         public Post? GetPost(Guid id)
         {
-            return _context.Posts.Include(p => p.Category).FirstOrDefault(p => p.PostId == id);
+            //var post = _context.Posts
+            //    .FirstOrDefault(p => p.PostId == id);
+            //var user = _context.ApplicationUsers.FirstOrDefault(u => u.Id == u.Posts.FirstOrDefault(p => p.PostId == id).User.Id);
+            //var category = post.Category;
+            return _context.Posts.Include(c => c.Category).Include(u => u.User)
+                .FirstOrDefault(p => p.PostId == id);
         }
+
 
     }
 }

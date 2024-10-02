@@ -4,6 +4,7 @@ using WeirdBlog.Service;
 using Microsoft.AspNetCore.Identity;
 using WeirdBlog.Utility;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using WeirdBlog.Models;
 
 
 namespace WeirdBlog
@@ -37,8 +38,9 @@ namespace WeirdBlog
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
-            
-            builder.Services.AddIdentity<IdentityUser<Guid>,IdentityRole<Guid>>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<WeirdBlogDbContext>().AddDefaultTokenProviders();
+
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<WeirdBlogDbContext>().AddDefaultTokenProviders();
+            //builder.Services.AddIdentity<IdentityUser<Guid>, IdentityRole<Guid>>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<WeirdBlogDbContext>().AddDefaultTokenProviders();
             builder.Services.Configure<IdentityOptions>(options =>
             {
                 options.Password.RequireDigit = false;
