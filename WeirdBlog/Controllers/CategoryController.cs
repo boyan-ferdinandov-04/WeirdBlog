@@ -35,6 +35,7 @@ namespace WeirdBlog.Controllers
             if (ModelState.IsValid)
             {
                 _categoryService.AddCategory(category);
+                TempData["success"] = "Category added successfully";
                 return RedirectToAction("Index");
             }
             return View(category);
@@ -60,6 +61,7 @@ namespace WeirdBlog.Controllers
             if (ModelState.IsValid)
             {
                 await _categoryService.Edit(category);
+                TempData["info"] = "Category edited successfully";
                 return RedirectToAction("Index");
             }
             return View(category);
@@ -83,6 +85,7 @@ namespace WeirdBlog.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var result = await _categoryService.Delete(id);
+            TempData["error"] = "Category deleted!";
             if (result)
             {
                 return RedirectToAction("Index");

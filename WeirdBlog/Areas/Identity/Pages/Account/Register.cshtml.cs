@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
@@ -107,6 +108,10 @@ namespace WeirdBlog.Areas.Identity.Pages.Account
             [StringLength(StaticConstants.UserNameMaxLength, ErrorMessage = "Username cannot be longer that 50 characters!")]
             [Display(Name = "UserName")]
             public string UserName { get; set; }
+
+            [StringLength(StaticConstants.DescriptionMaxLength,ErrorMessage = "Description cannot be longer than 200 characters")]
+            [Display(Name = "Description")]
+            public string Description { get; set; }
         }
 
 
@@ -187,6 +192,7 @@ namespace WeirdBlog.Areas.Identity.Pages.Account
                 var user =  Activator.CreateInstance<ApplicationUser>();
                 user.Email = Input.Email;
                 user.UserName = Input.UserName;
+                user.Description = Input.Description;
                 return user;
             }
             catch

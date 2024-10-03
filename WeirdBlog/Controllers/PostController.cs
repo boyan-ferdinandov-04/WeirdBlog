@@ -73,6 +73,7 @@ namespace WeirdBlog.Controllers
             {
                 postVM.Post.UserId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
                 _postService.CreatePost(postVM.Post);
+                TempData["success"] = "Post Created Successfully";
                 return RedirectToAction("Index");
             }
 
@@ -116,6 +117,7 @@ namespace WeirdBlog.Controllers
         public IActionResult Edit(PostVM obj)
         {
             _postService.Edit(obj.Post);
+            TempData["info"] = "Post edited successfully";
             return RedirectToAction("Index");
         }
 
@@ -141,6 +143,7 @@ namespace WeirdBlog.Controllers
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             await _postService.Delete(id);
+            TempData["error"] = "Post Deleted Successfully";
             return RedirectToAction("Index");
         }
     }

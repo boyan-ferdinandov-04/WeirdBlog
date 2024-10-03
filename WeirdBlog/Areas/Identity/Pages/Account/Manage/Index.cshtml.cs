@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using WeirdBlog.Models;
+using WeirdBlog.Utility;
 
 namespace WeirdBlog.Areas.Identity.Pages.Account.Manage
 {
@@ -59,6 +60,12 @@ namespace WeirdBlog.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
+            [Display(Name = "Description")]
+            [StringLength(StaticConstants.DescriptionMaxLength, ErrorMessage = "Description cannot be longer than 200 characters")]
+            public string Description { get; set; }
+
+
         }
 
         private async Task LoadAsync(ApplicationUser user)
@@ -70,7 +77,8 @@ namespace WeirdBlog.Areas.Identity.Pages.Account.Manage
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                Description = user.Description
             };
         }
 
@@ -111,9 +119,21 @@ namespace WeirdBlog.Areas.Identity.Pages.Account.Manage
                 }
             }
 
+            if (Input.Description != user.Description)
+            {
+                user.Description = Input.Description;
+                var result = await _userManager.UpdateAsync(user);
+                if (!result.Succeeded)
+                {
+                    StatusMessage = "Unexpected error when trying to update the description.";
+                    return RedirectToPage();
+                }
+            }
+
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
             return RedirectToPage();
         }
+
     }
 }

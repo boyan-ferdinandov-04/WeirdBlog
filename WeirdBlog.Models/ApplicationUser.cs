@@ -9,6 +9,8 @@ namespace WeirdBlog.Models
     [NotMapped]
     public class ApplicationUser:IdentityUser<Guid>
     {
+        [StringLength(StaticConstants.DescriptionMaxLength)]
+        public string Description { get; set; }
         public ICollection<Post> Posts { get; set; } = new List<Post>();
     }
 }
