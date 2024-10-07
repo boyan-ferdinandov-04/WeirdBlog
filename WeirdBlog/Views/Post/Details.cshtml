@@ -27,7 +27,35 @@
                     <p class="card-text" style="white-space: pre-wrap;">@Html.Raw(Model.Content)</p>
                 </div>
             </div>
+
+            <hr />
+            <h3>Comments(@Model.Comments.Count)</h3>
+
+            @if (Model.Comments != null && Model.Comments.Any())
+            {
+                @foreach (var comment in Model.Comments)
+                {
+                    <div class="comment mt-4">
+                        <strong>@comment.User.UserName</strong>:
+                        <p>@comment.Content</p>
+                        <small class="text-muted">@comment.CreatedAt.ToString("g")</small>
+                    </div>
+                }
+            }
+            else
+            {
+                <p>No comments yet. Be the first to comment!</p>
+            }
+
+            <hr />
+            <h4>Add a Comment</h4>
+            <form asp-action="AddComment" method="post">
+                <input type="hidden" name="PostId" value="@Model.PostId" />
+                <div class="form-group">
+                    <textarea name="Content" class="form-control" rows="4" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
         </div>
     </div>
 </div>
-

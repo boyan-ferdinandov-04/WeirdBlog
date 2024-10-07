@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Claims;
@@ -13,11 +14,15 @@ namespace WeirdBlog.Controllers
     {
         private readonly IPostService _postService;
         private readonly ICategoryService _categoryService;
+        private readonly ICommentService _commentService;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public PostController(IPostService postService, ICategoryService categoryService)
+        public PostController(IPostService postService, ICategoryService categoryService, ICommentService commentService, UserManager<ApplicationUser> userManager)
         {
             _postService = postService;
             _categoryService = categoryService;
+            _commentService = commentService;
+            _userManager = userManager;
         }
 
         [AllowAnonymous]
@@ -145,6 +150,28 @@ namespace WeirdBlog.Controllers
             await _postService.Delete(id);
             TempData["error"] = "Post Deleted Successfully";
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddComment(Guid postId, string content)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Redirect("/Identity/Account/Login");
+            }
+
+            var comment = new Comment
+            {
+                Content = content,
+                PostId = postId,
+                UserId = user.Id,
+                CreatedAt = DateTime.Now
+            };
+
+            await _commentService.AddComment(comment);
+
+            return RedirectToAction("Details", new { id = postId });
         }
     }
 }

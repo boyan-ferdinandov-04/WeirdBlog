@@ -19,6 +19,7 @@ namespace WeirdBlog
             builder.Services.AddControllersWithViews();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<IPostService, PostService>();
+            builder.Services.AddScoped<ICommentService, CommentService>();
             builder.Services.AddScoped<IEmailSender, EmailSender>();
 
             builder.Services.ConfigureApplicationCookie(options =>

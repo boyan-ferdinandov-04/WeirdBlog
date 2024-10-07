@@ -31,5 +31,7 @@ namespace WeirdBlog.Models
         [ForeignKey(nameof(UserId))]
         [ValidateNever]
         public ApplicationUser User { get; set; }
+
+        public ICollection<Comment> Comments { get; set; } = new List<Comment>();
     }
 }

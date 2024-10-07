@@ -12,5 +12,6 @@ namespace WeirdBlog.Models
         [StringLength(StaticConstants.DescriptionMaxLength)]
         public string Description { get; set; }
         public ICollection<Post> Posts { get; set; } = new List<Post>();
+        public ICollection<Comment> Comments { get; set; } = new List<Comment>();
     }
 }
