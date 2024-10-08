@@ -106,7 +106,7 @@ namespace WeirdBlog.Areas.Identity.Pages.Account
 
             [Required]
             [StringLength(StaticConstants.UserNameMaxLength, ErrorMessage = "Username cannot be longer that 50 characters!")]
-            [Display(Name = "UserName")]
+            [Display(Name = "Username")]
             public string UserName { get; set; }
 
             [StringLength(StaticConstants.DescriptionMaxLength,ErrorMessage = "Description cannot be longer than 200 characters")]
@@ -138,7 +138,7 @@ namespace WeirdBlog.Areas.Identity.Pages.Account
 
                 if (string.IsNullOrEmpty(Input.UserName))
                 {
-                    ModelState.AddModelError(string.Empty, "UserName is required.");
+                    ModelState.AddModelError(string.Empty, "Username is required.");
                     return Page();
                 }
 

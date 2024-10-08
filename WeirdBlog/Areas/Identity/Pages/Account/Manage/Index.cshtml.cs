@@ -53,10 +53,6 @@ namespace WeirdBlog.Areas.Identity.Pages.Account.Manage
         /// </summary>
         public class InputModel
         {
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
@@ -65,8 +61,11 @@ namespace WeirdBlog.Areas.Identity.Pages.Account.Manage
             [StringLength(StaticConstants.DescriptionMaxLength, ErrorMessage = "Description cannot be longer than 200 characters")]
             public string Description { get; set; }
 
-
+            [Required]
+            [Display(Name = "Username")]
+            public string Username { get; set; }
         }
+
 
         private async Task LoadAsync(ApplicationUser user)
         {
@@ -78,7 +77,8 @@ namespace WeirdBlog.Areas.Identity.Pages.Account.Manage
             Input = new InputModel
             {
                 PhoneNumber = phoneNumber,
-                Description = user.Description
+                Description = user.Description,
+                Username = userName
             };
         }
 
@@ -108,6 +108,19 @@ namespace WeirdBlog.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
+            // Check if the username has changed
+            var currentUsername = await _userManager.GetUserNameAsync(user);
+            if (Input.Username != currentUsername)
+            {
+                var setUsernameResult = await _userManager.SetUserNameAsync(user, Input.Username);
+                if (!setUsernameResult.Succeeded)
+                {
+                    StatusMessage = "Unexpected error when trying to set username.";
+                    return RedirectToPage();
+                }
+            }
+
+            // Check if the phone number has changed
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             if (Input.PhoneNumber != phoneNumber)
             {
@@ -119,6 +132,7 @@ namespace WeirdBlog.Areas.Identity.Pages.Account.Manage
                 }
             }
 
+            // Check if the description has changed
             if (Input.Description != user.Description)
             {
                 user.Description = Input.Description;

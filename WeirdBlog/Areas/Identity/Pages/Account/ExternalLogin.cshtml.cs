@@ -202,7 +202,9 @@ namespace WeirdBlog.Areas.Identity.Pages.Account
         {
             try
             {
-                return Activator.CreateInstance<ApplicationUser>();
+                var user = Activator.CreateInstance<ApplicationUser>();
+                user.Description = string.Empty;
+                return user;
             }
             catch
             {
