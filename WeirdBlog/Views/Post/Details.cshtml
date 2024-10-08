@@ -1,4 +1,7 @@
-﻿@model Post
+﻿@using System.Security.Claims
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using WeirdBlog.Utility
+@model Post
 
 @{
     ViewData["Title"] = Model.Title;
@@ -36,9 +39,18 @@
                 @foreach (var comment in Model.Comments)
                 {
                     <div class="comment mt-4">
-                        <strong>@comment.User.UserName</strong>:
+                        <strong>@comment.User.UserName</strong> said:
                         <p>@comment.Content</p>
                         <small class="text-muted">@comment.CreatedAt.ToString("g")</small>
+
+                        @if (User.IsInRole(StaticConstants.Role_Admin) || User.FindFirstValue(ClaimTypes.NameIdentifier) == comment.UserId.ToString())
+                        {
+                            <form asp-action="DeleteComment" method="post" style="display:inline;">
+                                <input type="hidden" name="commentId" value="@comment.CommentId" />
+                                <input type="hidden" name="postId" value="@Model.PostId" />
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        }
                     </div>
                 }
             }

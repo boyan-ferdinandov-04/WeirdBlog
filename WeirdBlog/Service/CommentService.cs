@@ -18,6 +18,19 @@ namespace WeirdBlog.Service
             await _dbContext.SaveChangesAsync();
         }
 
+        public async Task<bool> DeleteComment(Guid id)
+        {
+            var comment = await _dbContext.Comments.FirstOrDefaultAsync(c => c.CommentId == id);
+
+            if (comment == null)
+            {
+                return false;
+            }
+            _dbContext.Comments.Remove(comment);
+            await _dbContext.SaveChangesAsync();
+            return true;
+        }
+
         public List<Comment> GetAllComments(Guid postId)
         {
             var comments = _dbContext.Comments

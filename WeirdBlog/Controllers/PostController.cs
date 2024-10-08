@@ -173,5 +173,18 @@ namespace WeirdBlog.Controllers
 
             return RedirectToAction("Details", new { id = postId });
         }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteComment(Guid commentId, Guid postId)
+        {
+            var result = await _commentService.DeleteComment(commentId);
+
+            if (result)
+            {
+                return RedirectToAction("Details", new { id = postId });
+            }
+            return RedirectToAction("Details", new { id = postId });
+        }
+
     }
 }
