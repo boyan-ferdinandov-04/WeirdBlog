@@ -1,0 +1,32 @@
+﻿@model WeirdBlog.Models.ApplicationUser
+@{
+    ViewData["Title"] = $"{Model.UserName}'s Information";
+}
+
+<h1>@Model.UserName's Info</h1>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="~/css/user-card.css">
+
+<div class="card">
+    <h1>@Model.UserName</h1>
+    <h6>@Model.Description</h6>
+</div>
+
+@if (Model.Posts != null && Model.Posts.Any())
+{
+    <ul class="list-group">
+        @foreach (var post in Model.Posts)
+        {
+            <li class="list-group-item">
+                <h4>@post.Title</h4>
+                <p><small>Posted on @post.CreatedAt.ToString("g")</small></p>
+                <a href="@Url.Action("Details", "Post", new { id = post.PostId })">Read more</a>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>This user has not written any posts yet.</p>
+}

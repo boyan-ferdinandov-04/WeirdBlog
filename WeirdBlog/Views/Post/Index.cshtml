@@ -11,7 +11,7 @@
     <h1 class="display-4">All Posts</h1>
 </div>
 <link rel="stylesheet" href="~/css/index.css">
-<div class="container">
+<div class="container pb-5">
     <form asp-action="Index" method="get">
         <div class="row mb-3">
             <div class="col-md-4 position-relative">
@@ -43,7 +43,6 @@
         </div>
     </div>
 
-
     @if (ViewBag.Posts is List<WeirdBlog.Models.Post> posts)
     {
         @foreach (var post in posts)
@@ -60,7 +59,7 @@
                     @if (User.IsInRole(StaticConstants.Role_Admin) || User.FindFirstValue(ClaimTypes.NameIdentifier) == post.UserId.ToString())
                     {
                         <div class="w-75 btn-group" role="group">
-                            <a asp-controller="Post" asp-action="Edit" asp-route-id="@post.PostId" class="btn btn-primary mx-2">
+                            <a asp-controller="Post" asp-action="Edit" asp-route-id="@post.PostId" class="btn btn-warning mx-2">
                                 <i class="bi bi-pencil-square"></i> Edit
                             </a>
                             <a asp-controller="Post" asp-action="Delete" asp-route-id="@post.PostId" class="btn btn-danger mx-2">
@@ -118,10 +117,10 @@
         </ul>
     </div>
 </div>
+
 <script>
     document.getElementById('clearSearchBox').addEventListener('click', function () {
         document.getElementById('searchBox').value = '';
         this.style.display = 'none';
     });
 </script>
-

@@ -16,11 +16,20 @@
 
   <ItemGroup>
     <None Include="wwwroot\js\theme-toggle.js" />
+    <None Include="wwwroot\lib\davidshimjs-qrcodejs-04f46c6\.gitignore" />
+    <None Include="wwwroot\lib\davidshimjs-qrcodejs-04f46c6\index.svg" />
+    <None Include="wwwroot\lib\davidshimjs-qrcodejs-04f46c6\jquery.min.js" />
+    <None Include="wwwroot\lib\davidshimjs-qrcodejs-04f46c6\LICENSE" />
+    <None Include="wwwroot\lib\davidshimjs-qrcodejs-04f46c6\qrcode.js" />
+    <None Include="wwwroot\lib\davidshimjs-qrcodejs-04f46c6\qrcode.min.js" />
+    <None Include="wwwroot\lib\davidshimjs-qrcodejs-04f46c6\README.md" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AspNet.Security.OAuth.Discord" Version="8.2.0" />
+    <PackageReference Include="ISchemm.AspNetCore.Authentication.Tumblr" Version="3.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="8.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Twitter" Version="8.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />

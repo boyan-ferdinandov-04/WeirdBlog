@@ -57,3 +57,24 @@ textarea {
     display: inline;
 }
 
+.toast-success {
+    background-color: #28a745 !important;
+    color: white !important;
+}
+
+.toast-error {
+    background-color: #dc3545 !important;
+    color: white !important;
+}
+
+.toast-info {
+    background-color: #17a2b8 !important;
+    color: white !important;
+}
+
+.toast-warning {
+    background-color: #ffc107 !important;
+    color: black !important;
+}
+
+

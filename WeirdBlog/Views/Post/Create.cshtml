@@ -5,15 +5,15 @@
 
 <h4 class="text-center">Create Post</h4>
 <hr />
-<div class="row justify-content-center pb-2">
+<div class="row justify-content-center pb-5">
     <div class="col-md-10">
-        <form asp-action="Create">
+        <form asp-action="Create" id="createPostForm">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="mb-4 row">
                 <label asp-for="Post.Title" class="control-label"></label>
                 <div class="col-12">
-                    <input asp-for="Post.Title" class="form-control form-control-lg w-100" /> 
+                    <input asp-for="Post.Title" class="form-control form-control-lg w-100" />
                     <span asp-validation-for="Post.Title" class="text-danger"></span>
                 </div>
             </div>
@@ -21,13 +21,14 @@
             <div class="mb-4 row">
                 <label asp-for="Post.Content" class="control-label"></label>
                 <div class="col-12">
-                    <textarea asp-for="Post.Content" class="form-control form-control-lg w-100" rows="8"></textarea>
+                    <div id="editor" style="min-height: 300px; border: 1px solid #ccc; padding: 10px; margin-bottom: 60px;"></div>
+                    <textarea name="Post.Content" id="quillContent" class="d-none"></textarea>
                     <span asp-validation-for="Post.Content" class="text-danger"></span>
                 </div>
             </div>
 
             <div class="mb-4 row">
-                <label asp-for="Post.ImageUrl" class="control-label"></label>
+                <label asp-for="Post.ImageUrl" class="control-label" style="padding-top: 20px;"></label>
                 <div class="col-12">
                     <input asp-for="Post.ImageUrl" class="form-control form-control-lg w-100" />
                     <span asp-validation-for="Post.ImageUrl" class="text-danger"></span>
@@ -57,18 +58,34 @@
 </div>
 
 @section Scripts {
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <script>
-        tinymce.init({
-            selector: 'textarea',
-            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',
-            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
-            tinycomments_mode: 'embedded',
-            tinycomments_author: 'Author name',
-            mergetags_list: [
-                { value: 'First.Name', title: 'First Name' },
-                { value: 'Email', title: 'Email' },
-            ],
-            ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
+        const initialData = {
+            content: '',
+        };
+        const quill = new Quill('#editor', {
+            modules: {
+                toolbar: [
+                    ['bold', 'italic'],
+                    ['link', 'blockquote', 'code-block', 'image'],
+                    [{ list: 'ordered' }, { list: 'bullet' }],
+                ],
+            },
+            theme: 'snow',
+        });
+
+        const resetForm = () => {
+            quill.setContents([]);
+        };
+
+        document.querySelector('form').addEventListener('submit', function (e) {
+            const content = JSON.stringify(quill.getContents().ops);
+            document.querySelector('#quillContent').value = content;
+        });
+
+        document.querySelector('#resetForm')?.addEventListener('click', () => {
+            resetForm();
         });
     </script>
     <partial name="_ValidationScriptsPartial" />

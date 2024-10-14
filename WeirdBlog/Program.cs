@@ -28,18 +28,18 @@ namespace WeirdBlog
                 options.LogoutPath = "/Identity/Account/Logout";
                 options.AccessDeniedPath = "/Identity/Account/AccessDenied";
             });
-            //builder.Services.AddAuthentication().AddGoogle(options =>
-            //{
-            //    options.ClientId = "";
-            //    options.ClientSecret = "";
-            //});
+            builder.Services.AddAuthentication().AddGoogle(options =>
+            {
+                options.ClientId = "111753696304-s3kgnm6b9eq948n45oig4b2b3grp34if.apps.googleusercontent.com";
+                options.ClientSecret = "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";
+            });
 
-            //builder.Services.AddAuthentication().AddDiscord(options =>
-            //{
-            //    options.ClientId = "";
-            //    options.ClientSecret = "";
-            //    options.CallbackPath = "";
-            //});
+            builder.Services.AddAuthentication().AddDiscord(options =>
+            {
+                options.ClientId = "1282621682812588088";
+                options.ClientSecret = "p-OGCS3kWd5ngGbKw0gMtlHlo8FAyU9N";
+                options.CallbackPath = "/signin-discord";
+            });
 
             builder.Services.AddRazorPages();
             builder.Services.AddDbContext<WeirdBlogDbContext>(options =>

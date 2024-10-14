@@ -1,7 +1,7 @@
 ﻿@using System.Security.Claims
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using WeirdBlog.Utility
-@model Post
+@model WeirdBlog.Models.Post
 
 @{
     ViewData["Title"] = Model.Title;
@@ -16,7 +16,13 @@
                     <div class="text-muted text-center mb-3">
                         <small>Posted on @Model.CreatedAt.ToString("g")</small> |
                         <small>Category: @Model.Category.Name</small> |
-                        <small>Written by: @Model.User.UserName</small> |
+
+                        <small>
+                            Written by:
+                            <a href="@Url.Action("Details", "User", new { userId = Model.User.Id })">
+                                @Model.User.UserName
+                            </a>
+                        </small>
                     </div>
                     <hr />
 
@@ -66,7 +72,7 @@
                 <div class="form-group">
                     <textarea name="Content" class="form-control" rows="4" required></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-outline-success">Submit</button>
             </form>
         </div>
     </div>

@@ -185,5 +185,8 @@ namespace WeirdBlog.Areas.Identity.Pages.Account.Manage
                 _urlEncoder.Encode(email),
                 unformattedKey);
         }
+
+
     }
+
 }

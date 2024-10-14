@@ -5,33 +5,50 @@
     ViewData["ActivePage"] = ManageNavPages.Index;
 }
 
-<h3>@ViewData["Title"]</h3>
-<partial name="_StatusMessage" for="StatusMessage" />
-<div class="row">
-    <div class="col-md-6">
-        <form id="profile-form" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="list-group">
 
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Username" class="form-control" placeholder="Please choose your username." />
-                <label asp-for="Input.Username" class="form-label"></label>
-                <span asp-validation-for="Input.Username" class="text-danger"></span>
+                <a href="@Url.Action("Details", "User", new { userId = Model.UserId })" class="list-group-item list-group-item-action">
+                    View Details
+                </a>
+                <a href="@Url.Page("./ChangePassword")" class="list-group-item list-group-item-action @(ViewData["ActivePage"]?.ToString() == "ChangePassword" ? "active" : "")">
+                    Change Password
+                </a>
+                <a href="@Url.Page("./PersonalData")" class="list-group-item list-group-item-action @(ViewData["ActivePage"]?.ToString() == "PersonalData" ? "active" : "")">
+                    Personal Data
+                </a>
             </div>
+        </div>
 
-            <div class="form-floating mb-3">
-                <input asp-for="Input.PhoneNumber" class="form-control" placeholder="Please enter your phone number." />
-                <label asp-for="Input.PhoneNumber" class="form-label"></label>
-                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
-            </div>
+        <div class="col-md-8">
+            <h3>@ViewData["Title"]</h3>
+            <partial name="_StatusMessage" for="StatusMessage" />
+            <form id="profile-form" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
 
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Description" class="form-control" placeholder="Your Description" />
-                <label asp-for="Input.Description" class="form-label"></label>
-                <span asp-validation-for="Input.Description" class="text-danger"></span>
-            </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.Username" class="form-control" placeholder="Please choose your username." />
+                    <label asp-for="Input.Username" class="form-label"></label>
+                    <span asp-validation-for="Input.Username" class="text-danger"></span>
+                </div>
 
-            <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
-        </form>
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.PhoneNumber" class="form-control" placeholder="Please enter your phone number." />
+                    <label asp-for="Input.PhoneNumber" class="form-label"></label>
+                    <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.Description" class="form-control" placeholder="Your Description" />
+                    <label asp-for="Input.Description" class="form-label"></label>
+                    <span asp-validation-for="Input.Description" class="text-danger"></span>
+                </div>
+
+                <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
+            </form>
+        </div>
     </div>
 </div>
 

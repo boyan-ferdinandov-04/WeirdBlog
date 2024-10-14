@@ -44,6 +44,8 @@ namespace WeirdBlog.Areas.Identity.Pages.Account.Manage
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
+        ///
+        public Guid UserId { get; set; }
         [BindProperty]
         public InputModel Input { get; set; }
 
@@ -71,7 +73,7 @@ namespace WeirdBlog.Areas.Identity.Pages.Account.Manage
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-
+            UserId = user.Id;
             Username = userName;
 
             Input = new InputModel
