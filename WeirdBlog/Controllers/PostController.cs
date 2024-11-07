@@ -81,7 +81,7 @@ namespace WeirdBlog.Controllers
                 TempData["success"] = "Post Created Successfully";
                 return RedirectToAction("Index");
             }
-
+            
             postVM.Categories = _categoryService.GetCategories().Select(c => new SelectListItem
             {
                 Text = c.Name,

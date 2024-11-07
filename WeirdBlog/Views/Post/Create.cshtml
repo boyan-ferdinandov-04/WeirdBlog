@@ -7,7 +7,7 @@
 <hr />
 <div class="row justify-content-center pb-5">
     <div class="col-md-10">
-        <form asp-action="Create" id="createPostForm">
+        <form asp-action="Create" id="createPostForm" onsubmit="handleSubmit()">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="mb-4 row">
@@ -35,6 +35,8 @@
                 </div>
             </div>
 
+
+
             <div class="mb-4 row">
                 <label asp-for="Post.CategoryId" class="control-label"></label>
                 <div class="col-12">
@@ -47,7 +49,7 @@
 
             <div class="row">
                 <div class="col-sm-6">
-                    <button type="submit" class="btn btn-success btn-lg w-100">Create</button>
+                    <button type="submit" id="myButton" class="btn btn-success btn-lg w-100">Create</button>
                 </div>
                 <div class="col-sm-6">
                     <a asp-controller="Post" asp-action="Index" class="btn btn-light btn-lg w-100">Back To Main List</a>
@@ -58,35 +60,24 @@
 </div>
 
 @section Scripts {
-    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
     <script>
-        const initialData = {
-            content: '',
-        };
-        const quill = new Quill('#editor', {
-            modules: {
-                toolbar: [
-                    ['bold', 'italic'],
-                    ['link', 'blockquote', 'code-block', 'image'],
-                    [{ list: 'ordered' }, { list: 'bullet' }],
-                ],
-            },
+
+        let quill = new Quill('#editor', {
             theme: 'snow',
+            modules: {
+                toolbar: true
+            }
         });
 
-        const resetForm = () => {
-            quill.setContents([]);
-        };
-
-        document.querySelector('form').addEventListener('submit', function (e) {
-            const content = JSON.stringify(quill.getContents().ops);
-            document.querySelector('#quillContent').value = content;
-        });
-
-        document.querySelector('#resetForm')?.addEventListener('click', () => {
-            resetForm();
-        });
+        function handleSubmit() {
+            document.getElementById('quillContent').value = quill.root.innerHTML;
+        }
     </script>
+
     <partial name="_ValidationScriptsPartial" />
 }
+

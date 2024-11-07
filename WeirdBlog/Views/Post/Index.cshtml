@@ -15,8 +15,8 @@
     <form asp-action="Index" method="get">
         <div class="row mb-3">
             <div class="col-md-4 position-relative">
-                <input type="text" name="SearchTitle" id="searchBox" class="form-control" placeholder="Search by Title" value="@Model.SearchTitle" />
-                <button type="button" id="clearSearchBox" class="clear-btn">&times;</button>
+                <input type="search" name="SearchTitle" id="searchBox" class="form-control" placeholder="Search by Title" value="@Model.SearchTitle" />
+                 @* <button type="button" id="clearSearchBox" class="clear-btn">&times;</button>  *@
             </div>
             <div class="col-md-4">
                 <select name="SelectedCategoryId" class="form-control">
