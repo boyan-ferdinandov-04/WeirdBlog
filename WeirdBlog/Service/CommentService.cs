@@ -31,6 +31,25 @@ namespace WeirdBlog.Service
             return true;
         }
 
+        public async Task<bool> DeleteCommentWithReplies(Guid commentId)
+        {
+            var comment = await _dbContext.Comments.Include(c => c.Replies)
+                .FirstOrDefaultAsync(c => c.CommentId == commentId);
+            if (comment == null)
+            {
+                return false;
+            }
+
+            foreach (var reply in comment.Replies)
+            {
+                await DeleteCommentWithReplies(reply.CommentId);
+            }
+
+            _dbContext.Comments.Remove(comment);
+            await _dbContext.SaveChangesAsync();
+            return true;
+        }
+
         public List<Comment> GetAllComments(Guid postId)
         {
             var comments = _dbContext.Comments

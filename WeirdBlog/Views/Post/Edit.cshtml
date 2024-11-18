@@ -9,7 +9,7 @@
 <hr />
 <div class="row">
     <div class="col-md-10">
-        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data" onsubmit="handleSubmit()">
             <input asp-for="Post.PostId" type="hidden" />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -21,10 +21,11 @@
                 </div>
             </div>
 
-            <div class="form-group mb-4">
+            <div class="mb-4 row">
                 <label asp-for="Post.Content" class="control-label"></label>
                 <div class="col-12">
-                    <textarea asp-for="Post.Content" class="form-control form-control-lg w-100" rows="8" aria-required="true"></textarea>
+                    <div id="editor" style="min-height: 300px; border: 1px solid #ccc; padding: 10px; margin-bottom: 60px;"></div>
+                    <textarea name="Post.Content" id="quillContent" class="d-none"></textarea>
                 </div>
             </div>
 
@@ -58,15 +59,27 @@
 </div>
 
 @section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
     <script>
-        tinymce.init({
-            selector: 'textarea',
-            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ycheck typography',
-            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
-            tinycomments_mode: 'embedded',
-            tinycomments_author: 'Author name',
+        // Initialize Quill editor
+        let quill = new Quill('#editor', {
+            theme: 'snow',
+            modules: {
+                toolbar: true
+            }
         });
+
+        quill.root.innerHTML = `@Html.Raw(Model.Post.Content ?? "")`;
+
+        function handleSubmit() {
+            document.getElementById('quillContent').value = quill.root.innerHTML;
+            console.log(document.getElementById('quillContent').value); 
+        }
+
     </script>
 
     <partial name="_ValidationScriptsPartial" />
 }
+

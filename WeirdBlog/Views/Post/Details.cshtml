@@ -42,7 +42,7 @@
 
             @if (Model.Comments != null && Model.Comments.Any())
             {
-                @foreach (var comment in Model.Comments)
+                @foreach (var comment in Model.Comments.Where(c => c.ParentCommentId == null))
                 {
                     <div class="comment mt-4">
                         <strong>@comment.User.UserName</strong> said:
@@ -57,8 +57,33 @@
                                 <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                             </form>
                         }
+
+                        
+
+                        <div class="ml-4">
+                            @if (User.Identity is { IsAuthenticated: true })
+                            {
+                                <a href="#reply-form-@comment.CommentId" class="btn btn-outline-primary btn-sm mt-2">Reply</a>
+                                @foreach (var reply in comment.Replies)
+                                {
+                                    <div class="reply mt-3">
+                                        <strong>@reply.User.UserName</strong> replied:
+                                        <p>@reply.Content</p>
+                                        <small class="text-muted">@reply.CreatedAt.ToString("g")</small>
+                                    </div>
+                                }
+                            }
+                        </div>
+
+                        <form id="reply-form-@comment.CommentId" asp-action="AddReply" method="post" class="mt-3">
+                            <input type="hidden" name="commentId" value="@comment.CommentId" />
+                            <input type="hidden" name="postId" value="@Model.PostId" />
+                            <textarea name="content" class="form-control" rows="2" required></textarea>
+                            <button type="submit" class="btn btn-outline-success btn-sm mt-2">Submit Reply</button>
+                        </form>
                     </div>
                 }
+
             }
             else
             {

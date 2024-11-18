@@ -175,14 +175,42 @@ namespace WeirdBlog.Controllers
         }
 
         [HttpPost]
+        public async Task<IActionResult> AddReply(Guid commentId, Guid postId, string content)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Redirect("/Identity/Account/Login");
+            }
+
+            var reply = new Comment
+            {
+                Content = content,
+                PostId = postId,
+                UserId = user.Id,
+                CreatedAt = DateTime.Now,
+                ParentCommentId = commentId
+            };
+
+            await _commentService.AddComment(reply);
+
+            return RedirectToAction("Details", new { id = postId });
+        }
+
+        [HttpPost]
         public async Task<IActionResult> DeleteComment(Guid commentId, Guid postId)
         {
-            var result = await _commentService.DeleteComment(commentId);
+            var result = await _commentService.DeleteCommentWithReplies(commentId);
 
             if (result)
             {
-                return RedirectToAction("Details", new { id = postId });
+                TempData["success"] = "Comment and its replies deleted successfully.";
             }
+            else
+            {
+                TempData["error"] = "Failed to delete the comment.";
+            }
+
             return RedirectToAction("Details", new { id = postId });
         }
 

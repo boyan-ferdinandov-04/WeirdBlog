@@ -43,6 +43,7 @@ namespace WeirdBlog.Service
             return _context.Posts.ToList();
         }
 
+
         public async Task<PaginatedList<Post>> GetPaginatedPostsAsync(int pageIndex, int pageSize, string searchTitle = null, int? selectedCategoryId = null)
         {
             var query = _context.Posts.Include(p => p.Category).OrderByDescending(p => p.CreatedAt).AsQueryable();

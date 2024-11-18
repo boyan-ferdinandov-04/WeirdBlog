@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="wwwroot\css\index.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\css\layout.css" />
   </ItemGroup>
 
   <ItemGroup>

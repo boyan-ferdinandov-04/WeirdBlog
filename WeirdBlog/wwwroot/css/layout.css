@@ -1,0 +1,20 @@
+﻿body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+}
+
+footer {
+    margin-top: auto;
+    padding: 1px 0;
+    width: 100%;
+    border-top: 1px solid #e5e5e5;
+}
+
+.container {
+    padding-bottom: 50px;
+}
