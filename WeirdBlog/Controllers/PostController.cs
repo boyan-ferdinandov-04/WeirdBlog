@@ -119,11 +119,40 @@ namespace WeirdBlog.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult Edit(PostVM obj)
         {
-            _postService.Edit(obj.Post);
-            TempData["info"] = "Post edited successfully";
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                var currentPost = _postService.GetPost(obj.Post.PostId);
+                if (currentPost == null)
+                {
+                    return NotFound();
+                }
+
+                var currentUserId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                if (currentPost.UserId != currentUserId && !User.IsInRole(StaticConstants.Role_Admin))
+                {
+                    return Forbid();
+                }
+
+                currentPost.Title = obj.Post.Title;
+                currentPost.Content = obj.Post.Content;
+                currentPost.CategoryId = obj.Post.CategoryId;
+
+                _postService.Edit(currentPost);
+                TempData["info"] = "Post edited successfully";
+                return RedirectToAction("Index");
+            }
+
+            // Repopulate the categories if the model state is invalid
+            obj.Categories = _categoryService.GetCategories().Select(c => new SelectListItem
+            {
+                Text = c.Name,
+                Value = c.CategoryId.ToString()
+            });
+
+            return View(obj);
         }
 
         [Authorize]

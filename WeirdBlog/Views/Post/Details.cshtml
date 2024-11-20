@@ -63,11 +63,10 @@
                         <div class="ml-4">
                             @if (User.Identity is { IsAuthenticated: true })
                             {
-                                <a href="#reply-form-@comment.CommentId" class="btn btn-outline-primary btn-sm mt-2">Reply</a>
                                 @foreach (var reply in comment.Replies)
                                 {
                                     <div class="reply mt-3">
-                                        <strong>@reply.User.UserName</strong> replied:
+                                        <strong>@reply.User.UserName</strong> replied to @comment.User:
                                         <p>@reply.Content</p>
                                         <small class="text-muted">@reply.CreatedAt.ToString("g")</small>
                                     </div>

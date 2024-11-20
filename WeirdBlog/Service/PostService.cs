@@ -68,10 +68,15 @@ namespace WeirdBlog.Service
             //    .FirstOrDefault(p => p.PostId == id);
             //var user = _context.ApplicationUsers.FirstOrDefault(u => u.Id == u.Posts.FirstOrDefault(p => p.PostId == id).User.Id);
             //var category = post.Category;
+
             return _context.Posts
                 .Include(c => c.Category)
                 .Include(u => u.User)
-                .Include(t => t.Comments).ThenInclude(u => u.User)
+                .Include(t => t.Comments)
+                .ThenInclude(c => c.User)
+                .Include(t => t.Comments)
+                .ThenInclude(c => c.Replies)
+                .ThenInclude(r => r.User) 
                 .FirstOrDefault(p => p.PostId == id);
         }
 
