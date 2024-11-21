@@ -11,5 +11,6 @@ namespace WeirdBlog.Service
         Task<bool> Delete(Guid id);
         Post? GetPost(Guid id);
         Task<PaginatedList<Post>> GetPaginatedPostsAsync(int pageIndex, int pageSize, string searchTitle = null, int? selectedCategoryId = null);
+        Task<bool> LikePost(Guid postId, Guid userId);
     }
 }

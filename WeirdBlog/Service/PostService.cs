@@ -18,6 +18,29 @@ namespace WeirdBlog.Service
             _context.SaveChanges();
         }
 
+        public async Task<bool> LikePost(Guid postId, Guid userId)
+        {
+            var like = await _context.Likes
+                .FirstOrDefaultAsync(l => l.PostId == postId);
+            if (like == null)
+            {
+                _context.Likes.Add(new Like()
+                {
+                    PostId = postId,
+                    UserId = userId
+                });
+                await _context.SaveChangesAsync();
+                return true;
+            }
+
+            else
+            {
+                _context.Likes.Remove(like);
+                await _context.SaveChangesAsync();
+                return false;
+            }
+        }
+
         public async Task<bool> Delete(Guid id)
         {
             var post = await _context.Posts.Include(c => c.Comments).FirstOrDefaultAsync(p => p.PostId == id);
@@ -77,6 +100,7 @@ namespace WeirdBlog.Service
                 .Include(t => t.Comments)
                 .ThenInclude(c => c.Replies)
                 .ThenInclude(r => r.User) 
+                .Include(l => l.Likes)
                 .FirstOrDefault(p => p.PostId == id);
         }
 

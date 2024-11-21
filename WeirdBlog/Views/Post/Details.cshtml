@@ -23,6 +23,15 @@
                                 @Model.User.UserName
                             </a>
                         </small>
+                        <small>
+                            <form asp-controller="Post" asp-action="Like" method="post" style="display:inline;">
+                                <input type="hidden" name="postId" value="@Model.PostId" />
+                                <button type="submit" class="btn btn-outline-primary btn-sm">
+                                    👍 Like (@Model.Likes.Count)
+                                </button>
+                            </form>
+                        </small>
+
                     </div>
                     <hr />
 
@@ -65,7 +74,7 @@
                             {
                                 @foreach (var reply in comment.Replies)
                                 {
-                                    <div class="reply mt-3">
+                                    <div class="reply mt-3" id="reply">
                                         <strong>@reply.User.UserName</strong> replied to @comment.User:
                                         <p>@reply.Content</p>
                                         <small class="text-muted">@reply.CreatedAt.ToString("g")</small>
@@ -101,3 +110,19 @@
         </div>
     </div>
 </div>
+
+@section Scripts
+{
+    <script>
+        async function toggleLike(postId) {
+            const response = await fetch(`/posts/like/${postId}`, { method: 'POST' });
+
+            if (response.ok) {
+                const likeCount = await response.json();
+                document.getElementById('like-count').textContent = likeCount;
+            } else {
+                alert('An error occurred.');
+            }
+        }
+    </script>
+}

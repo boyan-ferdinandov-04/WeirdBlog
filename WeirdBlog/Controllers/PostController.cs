@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using WeirdBlog.Models;
 using WeirdBlog.Models.ViewModels;
@@ -138,6 +139,7 @@ namespace WeirdBlog.Controllers
 
                 currentPost.Title = obj.Post.Title;
                 currentPost.Content = obj.Post.Content;
+                currentPost.ImageUrl = obj.Post.ImageUrl;
                 currentPost.CategoryId = obj.Post.CategoryId;
 
                 _postService.Edit(currentPost);
@@ -153,6 +155,24 @@ namespace WeirdBlog.Controllers
             });
 
             return View(obj);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Like(Guid postId)
+        {
+            var currentUserId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var post = _postService.GetPost(postId);
+
+            if (post == null) return NotFound();
+
+            await _postService.LikePost(postId, currentUserId);
+
+            return RedirectToAction("Details", new
+            {
+                id = postId 
+
+            });
         }
 
         [Authorize]
@@ -242,6 +262,8 @@ namespace WeirdBlog.Controllers
 
             return RedirectToAction("Details", new { id = postId });
         }
+
+        
 
     }
 }
