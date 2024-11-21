@@ -22,12 +22,12 @@
                             <a href="@Url.Action("Details", "User", new { userId = Model.User.Id })">
                                 @Model.User.UserName
                             </a>
-                        </small>
+                        </small> |
                         <small>
                             <form asp-controller="Post" asp-action="Like" method="post" style="display:inline;">
                                 <input type="hidden" name="postId" value="@Model.PostId" />
-                                <button type="submit" class="btn btn-outline-primary btn-sm">
-                                    👍 Like (@Model.Likes.Count)
+                                <button type="submit" class="btn btn-outline-success btn-sm">
+                                    <i class="bi bi-hand-thumbs-up-fill"></i> Like (@Model.Likes.Count)
                                 </button>
                             </form>
                         </small>

@@ -164,16 +164,25 @@ namespace WeirdBlog.Controllers
             var currentUserId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             var post = _postService.GetPost(postId);
 
-            if (post == null) return NotFound();
-
-            await _postService.LikePost(postId, currentUserId);
-
-            return RedirectToAction("Details", new
+            if (post == null)
             {
-                id = postId 
+                return NotFound();
+            }
 
-            });
+            var likeAdded = await _postService.LikePost(postId, currentUserId);
+
+            if (likeAdded)
+            {
+                TempData["info"] = "You liked the post!";
+            }
+            else
+            {
+                TempData["info"] = "You already liked this post.";
+            }
+
+            return RedirectToAction("Details", new { id = postId });
         }
+
 
         [Authorize]
         public async Task<IActionResult> Delete(Guid id)

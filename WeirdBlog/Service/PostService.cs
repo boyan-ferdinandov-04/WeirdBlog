@@ -20,35 +20,32 @@ namespace WeirdBlog.Service
 
         public async Task<bool> LikePost(Guid postId, Guid userId)
         {
-            var like = await _context.Likes
-                .FirstOrDefaultAsync(l => l.PostId == postId);
-            if (like == null)
-            {
-                _context.Likes.Add(new Like()
-                {
-                    PostId = postId,
-                    UserId = userId
-                });
-                await _context.SaveChangesAsync();
-                return true;
-            }
+            var existingLike = _context.Likes.FirstOrDefault(l => l.PostId == postId && l.UserId == userId);
 
-            else
+            if (existingLike != null)
             {
-                _context.Likes.Remove(like);
-                await _context.SaveChangesAsync();
                 return false;
             }
+
+            var like = new Like
+            {
+                PostId = postId,
+                UserId = userId
+            };
+            _context.Likes.Add(like);
+            await _context.SaveChangesAsync();
+            return true;
         }
 
         public async Task<bool> Delete(Guid id)
         {
-            var post = await _context.Posts.Include(c => c.Comments).FirstOrDefaultAsync(p => p.PostId == id);
+            var post = await _context.Posts.Include(c => c.Comments).Include(l => l.Likes).FirstOrDefaultAsync(p => p.PostId == id);
             if (post == null)
             {
                 return false;
             }
             _context.Comments.RemoveRange(post.Comments);
+            _context.Likes.RemoveRange(post.Likes);
             _context.Posts.Remove(post);
             await _context.SaveChangesAsync();
             return true;
