@@ -111,18 +111,4 @@
     </div>
 </div>
 
-@section Scripts
-{
-    <script>
-        async function toggleLike(postId) {
-            const response = await fetch(`/posts/like/${postId}`, { method: 'POST' });
 
-            if (response.ok) {
-                const likeCount = await response.json();
-                document.getElementById('like-count').textContent = likeCount;
-            } else {
-                alert('An error occurred.');
-            }
-        }
-    </script>
-}

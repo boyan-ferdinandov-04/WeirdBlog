@@ -30,6 +30,7 @@ namespace WeirdBlog
                 options.AccessDeniedPath = "/Identity/Account/AccessDenied";
             });
             
+
             builder.Services.AddRazorPages();
             builder.Services.AddDbContext<WeirdBlogDbContext>(options =>
             {

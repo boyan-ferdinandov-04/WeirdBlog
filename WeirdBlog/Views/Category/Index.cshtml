@@ -19,13 +19,12 @@
     </div>
 </div>
 
-<link rel="stylesheet" href="~/css/table.css" />
+
 <title>Categories</title>
 
 <table class="table">
     <thead>
         <tr>
-            <th>Id</th>
             <th>Name</th>
             <th></th>
         </tr>
@@ -34,7 +33,6 @@
         @foreach (var item in Model.OrderBy(c => c.Name))
         {
             <tr>
-                <td>@item.CategoryId</td>
                 <td>
                     <a asp-controller="Post" asp-action="Index" asp-route-selectedCategoryId="@item.CategoryId" class="text-decoration-none">
                         @item.Name
