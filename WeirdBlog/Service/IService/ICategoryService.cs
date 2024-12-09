@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WeirdBlog.Models;
 
-namespace WeirdBlog.Service
+namespace WeirdBlog.Service.IService
 {
     public interface ICategoryService
     {
-        List<Category> GetCategories(); 
+        List<Category> GetCategories();
         void AddCategory(Category category);
         Task<Category> GetCategoryById(int id);
         Task<Category> Edit(Category category);

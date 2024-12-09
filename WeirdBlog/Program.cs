@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using WeirdBlog.Utility;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using WeirdBlog.Models;
+using WeirdBlog.Service.IService;
 
 
 namespace WeirdBlog

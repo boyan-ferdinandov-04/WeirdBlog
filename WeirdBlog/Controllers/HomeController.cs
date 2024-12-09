@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using WeirdBlog.Models;
-using WeirdBlog.Service;
+using WeirdBlog.Service.IService;
 
 namespace WeirdBlog.Controllers
 {

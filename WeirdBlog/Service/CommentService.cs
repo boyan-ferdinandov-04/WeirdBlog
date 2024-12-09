@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WeirdBlog.DataAccess.Data;
 using WeirdBlog.Models;
+using WeirdBlog.Service.IService;
 
 namespace WeirdBlog.Service
 {
@@ -33,22 +34,28 @@ namespace WeirdBlog.Service
 
         public async Task<bool> DeleteCommentWithReplies(Guid commentId)
         {
-            var comment = await _dbContext.Comments.Include(c => c.Replies)
+            var comment = await _dbContext.Comments
+                .Include(c => c.Replies)
                 .FirstOrDefaultAsync(c => c.CommentId == commentId);
+
             if (comment == null)
             {
                 return false;
             }
 
-            foreach (var reply in comment.Replies)
+            var replyIds = comment.Replies.Select(r => r.CommentId).ToList();
+
+            foreach (var replyId in replyIds)
             {
-                await DeleteCommentWithReplies(reply.CommentId);
+                await DeleteCommentWithReplies(replyId);
             }
 
             _dbContext.Comments.Remove(comment);
             await _dbContext.SaveChangesAsync();
+
             return true;
         }
+
 
         public List<Comment> GetAllComments(Guid postId)
         {

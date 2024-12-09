@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using WeirdBlog.Models;
 using WeirdBlog.Models.ViewModels;
-using WeirdBlog.Service;
+using WeirdBlog.Service.IService;
 using WeirdBlog.Utility;
 
 namespace WeirdBlog.Controllers
@@ -18,7 +18,8 @@ namespace WeirdBlog.Controllers
         private readonly ICommentService _commentService;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public PostController(IPostService postService, ICategoryService categoryService, ICommentService commentService, UserManager<ApplicationUser> userManager)
+        public PostController(IPostService postService, ICategoryService categoryService,
+            ICommentService commentService, UserManager<ApplicationUser> userManager)
         {
             _postService = postService;
             _categoryService = categoryService;
@@ -35,7 +36,8 @@ namespace WeirdBlog.Controllers
                 Value = c.CategoryId.ToString()
             });
 
-            var posts = await _postService.GetPaginatedPostsAsync(pageIndex, pageSize, postVM.SearchTitle, postVM.SelectedCategoryId);
+            var posts = await _postService.GetPaginatedPostsAsync(pageIndex, pageSize, postVM.SearchTitle,
+                postVM.SelectedCategoryId);
 
             ViewBag.Posts = posts;
             return View(postVM);
@@ -49,6 +51,7 @@ namespace WeirdBlog.Controllers
             {
                 return NotFound();
             }
+
             return View(post);
         }
 
@@ -67,7 +70,7 @@ namespace WeirdBlog.Controllers
             {
                 return Redirect("/Identity/Account/Login");
             }
-            
+
             return View(postVM);
         }
 
@@ -82,7 +85,7 @@ namespace WeirdBlog.Controllers
                 TempData["success"] = "Post Created Successfully";
                 return RedirectToAction("Index");
             }
-            
+
             postVM.Categories = _categoryService.GetCategories().Select(c => new SelectListItem
             {
                 Text = c.Name,
@@ -147,7 +150,6 @@ namespace WeirdBlog.Controllers
                 return RedirectToAction("Index");
             }
 
-            // Repopulate the categories if the model state is invalid
             obj.Categories = _categoryService.GetCategories().Select(c => new SelectListItem
             {
                 Text = c.Name,
@@ -256,23 +258,21 @@ namespace WeirdBlog.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> DeleteComment(Guid commentId, Guid postId)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteCommentWithReplies(Guid commentId, Guid postId)
         {
-            var result = await _commentService.DeleteCommentWithReplies(commentId);
+            bool result = await _commentService.DeleteCommentWithReplies(commentId);
 
-            if (result)
+            if (!result)
             {
-                TempData["success"] = "Comment and its replies deleted successfully.";
+                TempData["Error"] = "Unable to delete the comment.";
             }
             else
             {
-                TempData["error"] = "Failed to delete the comment.";
+                TempData["Success"] = "Comment and its replies have been deleted successfully.";
             }
 
             return RedirectToAction("Details", new { id = postId });
         }
-
-        
-
     }
 }

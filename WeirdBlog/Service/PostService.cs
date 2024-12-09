@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using WeirdBlog.DataAccess.Data;
 using WeirdBlog.Models;
+using WeirdBlog.Service.IService;
 
 namespace WeirdBlog.Service
 {

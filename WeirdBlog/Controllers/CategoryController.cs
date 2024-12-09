@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WeirdBlog.Models;
-using WeirdBlog.Service;
+using WeirdBlog.Service.IService;
 using WeirdBlog.Utility;
 
 namespace WeirdBlog.Controllers

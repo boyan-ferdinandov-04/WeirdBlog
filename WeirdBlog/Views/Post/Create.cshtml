@@ -6,6 +6,12 @@
 <h4 class="text-center">Create Post</h4>
 <hr />
 <div class="row justify-content-center pb-5">
+    <style>
+        #editor {
+            background-color: #ffffff;
+            color: #000000; 
+        }
+    </style>
     <div class="col-md-10">
         <form asp-action="Create" id="createPostForm" onsubmit="handleSubmit()">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -13,7 +19,7 @@
             <div class="mb-4 row">
                 <label asp-for="Post.Title" class="control-label"></label>
                 <div class="col-12">
-                    <input asp-for="Post.Title" class="form-control form-control-lg w-100" />
+                    <input asp-for="Post.Title" class="form-control form-control-lg w-100"/>
                     <span asp-validation-for="Post.Title" class="text-danger"></span>
                 </div>
             </div>
@@ -30,7 +36,7 @@
             <div class="mb-4 row">
                 <label asp-for="Post.ImageUrl" class="control-label" style="padding-top: 20px;"></label>
                 <div class="col-12">
-                    <input asp-for="Post.ImageUrl" class="form-control form-control-lg w-100" />
+                    <input asp-for="Post.ImageUrl" class="form-control form-control-lg w-100"/>
                     <span asp-validation-for="Post.ImageUrl" class="text-danger"></span>
                 </div>
             </div>
@@ -79,4 +85,5 @@
 
     <partial name="_ValidationScriptsPartial" />
 }
+
 

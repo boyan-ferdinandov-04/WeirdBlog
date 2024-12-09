@@ -1,6 +1,6 @@
 ﻿using WeirdBlog.Models;
 
-namespace WeirdBlog.Service
+namespace WeirdBlog.Service.IService
 {
     public interface ICommentService
     {

@@ -2,7 +2,7 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using WeirdBlog.Utility
 @model WeirdBlog.Models.Post
-
+<partial name="_Notification"></partial>
 @{
     ViewData["Title"] = Model.Title;
 }
@@ -60,7 +60,7 @@
 
                         @if (User.IsInRole(StaticConstants.Role_Admin) || User.FindFirstValue(ClaimTypes.NameIdentifier) == comment.UserId.ToString())
                         {
-                            <form asp-action="DeleteComment" method="post" style="display:inline;">
+                            <form asp-action="DeleteCommentWithReplies" method="post" style="display:inline;">
                                 <input type="hidden" name="commentId" value="@comment.CommentId" />
                                 <input type="hidden" name="postId" value="@Model.PostId" />
                                 <button type="submit" class="btn btn-danger btn-sm">Delete</button>
