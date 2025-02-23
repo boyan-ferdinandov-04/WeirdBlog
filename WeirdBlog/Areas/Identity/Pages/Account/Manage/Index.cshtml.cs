@@ -59,6 +59,7 @@ namespace WeirdBlog.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
 
+            [Required(ErrorMessage = "Description is required")]
             [Display(Name = "Description")]
             [StringLength(StaticConstants.DescriptionMaxLength, ErrorMessage = "Description cannot be longer than 200 characters")]
             public string Description { get; set; }

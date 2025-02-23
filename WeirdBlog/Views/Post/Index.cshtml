@@ -7,6 +7,9 @@
     ViewBag.Title = "Index";
 }
 
+<!-- Add viewport meta tag for mobile responsiveness -->
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
 <div class="text-center">
     <h1 class="display-4">All Posts</h1>
 </div>
@@ -14,11 +17,11 @@
 <div class="container pb-5">
     <form asp-action="Index" method="get">
         <div class="row mb-3">
-            <div class="col-md-4 position-relative">
+            <div class="col-12 col-md-4 position-relative">
                 <input type="search" name="SearchTitle" id="searchBox" class="form-control" placeholder="Search by Title" value="@Model.SearchTitle" />
-                 @* <button type="button" id="clearSearchBox" class="clear-btn">&times;</button>  *@
+                @* <button type="button" id="clearSearchBox" class="clear-btn">&times;</button> *@
             </div>
-            <div class="col-md-4">
+            <div class="col-12 col-md-4 mt-2 mt-md-0">
                 <select name="SelectedCategoryId" class="form-control">
                     <option value="">Select Category</option>
                     @foreach (var category in Model.Categories)
@@ -29,14 +32,14 @@
                     }
                 </select>
             </div>
-            <div class="col-md-4">
-                <button type="submit" class="btn btn-primary">Search</button>
+            <div class="col-12 col-md-4 mt-2 mt-md-0">
+                <button type="submit" class="btn btn-primary w-100">Search</button>
             </div>
         </div>
     </form>
 
     <div class="row mb-5">
-        <div class="col-7 text-end">
+        <div class="col-8 text-end">
             <a asp-controller="Post" asp-action="Create" class="btn btn-primary">
                 <i class="bi bi-pencil"></i> Write your post
             </a>
@@ -47,9 +50,11 @@
     {
         @foreach (var post in posts)
         {
-            <div class="post-item">
-                <img src="@post.ImageUrl" alt="Cover Photo">
-                <div class="post-content">
+            <div class="post-item row mb-4">
+                <div class="col-12 col-md-4">
+                    <img src="@post.ImageUrl" alt="Cover Photo" class="img-fluid">
+                </div>
+                <div class="col-12 col-md-8">
                     <h2 class="post-title">
                         <a asp-action="Details" asp-controller="Post" asp-route-id="@post.PostId">@post.Title</a>
                     </h2>
@@ -58,7 +63,7 @@
                     </h3>
                     @if (User.IsInRole(StaticConstants.Role_Admin) || User.FindFirstValue(ClaimTypes.NameIdentifier) == post.UserId.ToString())
                     {
-                        <div class="w-75 btn-group" role="group">
+                        <div class="w-100 btn-group" role="group">
                             <a asp-controller="Post" asp-action="Edit" asp-route-id="@post.PostId" class="btn btn-warning mx-2">
                                 <i class="bi bi-pencil-square"></i> Edit
                             </a>
@@ -72,7 +77,7 @@
         }
     }
     <div class="pagination">
-        <ul class="pagination">
+        <ul class="pagination justify-content-center">
             @if (ViewBag.Posts.HasPreviousPage)
             {
                 <li class="page-item">
@@ -119,7 +124,7 @@
 </div>
 
 <script>
-    document.getElementById('clearSearchBox').addEventListener('click', function () {
+    document.getElementById('clearSearchBox')?.addEventListener('click', function () {
         document.getElementById('searchBox').value = '';
         this.style.display = 'none';
     });
