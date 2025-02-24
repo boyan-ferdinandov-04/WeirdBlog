@@ -82,7 +82,7 @@ namespace WeirdBlog.Controllers
             {
                 postVM.Post.UserId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
                 _postService.CreatePost(postVM.Post);
-                TempData["success"] = "Post Created Successfully";
+                TempData["success"] = "Post Created Successfully - Pending Approval";
                 return RedirectToAction("Index");
             }
 

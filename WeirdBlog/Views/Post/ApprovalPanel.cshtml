@@ -25,13 +25,18 @@
             <td>
                 @if (!post.IsApproved)
                 {
+                    <a href="@Url.Action("Details", "Post", new { id = post.PostId })" class="btn btn-info">Read Post</a>
                     <form method="post" asp-action="ApprovePost" asp-route-id="@post.PostId" style="display:inline;">
                         <button type="submit" class="btn btn-success">Approve</button>
+                    </form>
+                    <form method="post" asp-action="Delete" asp-route-id="@post.PostId" style="display:inline;">
+                        <button type="submit" class="btn btn-danger">Delete</button>
                     </form>
                 }
                 else
                 {
                     <span>Approved</span>
+                    <a href="@Url.Action("Details", "Post", new { id = post.PostId })" class="btn btn-info">Read Post</a>
                 }
             </td>
         </tr>

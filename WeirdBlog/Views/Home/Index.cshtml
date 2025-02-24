@@ -5,11 +5,10 @@
 
 <div class="text-center">
     <h1 class="display-4">Latest Posts</h1>
-    
 </div>
 <link rel="stylesheet" href="~/css/index.css">
 <div class="container">
-    @foreach (var post in Model.OrderByDescending(p => p.CreatedAt).Take(2))
+    @foreach (var post in Model.Where(p => p.IsApproved).OrderByDescending(p => p.CreatedAt).Take(2))
     {
         <div class="post-item">
             <img src="@post.ImageUrl" alt="Cover Photo">
@@ -18,7 +17,7 @@
                     <a asp-action="Details" asp-controller="Post" asp-route-id="@post.PostId">@post.Title</a>
                 </h2>
                 <h3 class="post-item">
-                    <i class="bi bi-clock-history"></i> @post.CreatedAt.ToString("g");
+                    <i class="bi bi-clock-history"></i> @post.CreatedAt.ToString("g")
                 </h3>
             </div>
         </div>
