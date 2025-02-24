@@ -1,4 +1,5 @@
 ﻿@page
+@using WeirdBlog.Utility
 @model IndexModel
 @{
     ViewData["Title"] = "Profile";
@@ -9,7 +10,6 @@
     <div class="row">
         <div class="col-md-4">
             <div class="list-group">
-
                 <a href="@Url.Action("Details", "User", new { userId = Model.UserId })" class="list-group-item list-group-item-action">
                     View Details
                 </a>
@@ -19,7 +19,15 @@
                 <a href="@Url.Page("./PersonalData")" class="list-group-item list-group-item-action @(ViewData["ActivePage"]?.ToString() == "PersonalData" ? "active" : "")">
                     Personal Data
                 </a>
+    
+                @if (User.IsInRole(StaticConstants.Role_Admin))
+                {
+                    <a href="@Url.Action("ApprovalPanel", "Post")" class="list-group-item list-group-item-action @(ViewData["ActivePage"]?.ToString() == "ApprovalPanel" ? "active" : "")">
+                        Post Approval Panel
+                    </a>
+                }
             </div>
+
         </div>
 
         <div class="col-md-8">

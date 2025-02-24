@@ -274,5 +274,34 @@ namespace WeirdBlog.Controllers
 
             return RedirectToAction("Details", new { id = postId });
         }
+
+        [Authorize(Roles = StaticConstants.Role_Admin)]
+        public async Task<IActionResult> ApprovalPanel(int pageIndex = 1, int pageSize = 5)
+        {
+            if (!User.IsInRole(StaticConstants.Role_Admin))
+            {
+                return Redirect("/Identity/Account/AccessDenied");
+            }
+
+            var pendingPosts = await _postService.GetPendingPostsAsync(pageIndex, pageSize);
+            return View(pendingPosts);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = StaticConstants.Role_Admin)]
+        public async Task<IActionResult> ApprovePost(Guid id)
+        {
+            var result = await _postService.ApprovePost(id);
+            if (!result)
+            {
+                TempData["error"] = "Unable to approve the post.";
+            }
+            else
+            {
+                TempData["success"] = "Post approved successfully";
+            }
+            return RedirectToAction("ApprovalPanel");
+        }
+
     }
 }

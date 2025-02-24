@@ -1,0 +1,40 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model WeirdBlog.Service.PaginatedList<WeirdBlog.Models.Post>
+@{
+    ViewData["Title"] = "Approve Posts";
+}
+
+<h1>Approve Posts</h1>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Category</th>
+        <th>Created At</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var post in Model)
+    {
+        <tr>
+            <td>@post.Title</td>
+            <td>@post.Category?.Name</td>
+            <td>@post.CreatedAt.ToShortDateString()</td>
+            <td>
+                @if (!post.IsApproved)
+                {
+                    <form method="post" asp-action="ApprovePost" asp-route-id="@post.PostId" style="display:inline;">
+                        <button type="submit" class="btn btn-success">Approve</button>
+                    </form>
+                }
+                else
+                {
+                    <span>Approved</span>
+                }
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

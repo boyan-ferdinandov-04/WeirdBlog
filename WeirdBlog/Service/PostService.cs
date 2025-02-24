@@ -19,6 +19,29 @@ namespace WeirdBlog.Service
             _context.SaveChanges();
         }
 
+        public async Task<PaginatedList<Post>> GetPendingPostsAsync(int pageIndex, int pageSize)
+        {
+            var query = _context.Posts
+                .Where(p => !p.IsApproved)
+                .Include(p => p.Category)
+                .OrderByDescending(p => p.CreatedAt)
+                .AsQueryable();
+
+            return await PaginatedList<Post>.CreateAsync(query.AsNoTracking(), pageIndex, pageSize);
+        }
+
+        public async Task<bool> ApprovePost(Guid postId)
+        {
+            var post = await _context.Posts.FirstOrDefaultAsync(p => p.PostId == postId);
+            if (post == null)
+            {
+                return false;
+            }
+            post.IsApproved = true;
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
         public async Task<bool> LikePost(Guid postId, Guid userId)
         {
             var existingLike = _context.Likes.FirstOrDefault(l => l.PostId == postId && l.UserId == userId);
