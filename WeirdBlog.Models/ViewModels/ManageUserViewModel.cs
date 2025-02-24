@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace WeirdBlog.Models.ViewModels
+﻿namespace WeirdBlog.Models.ViewModels
 {
     public class ManageUserViewModel
     {
-        public string UserId { get; set; }
+        public Guid UserId { get; set; }
         public string Email { get; set; }
-        public IList<string> Roles { get; set; }
+        public List<string> Roles { get; set; } = new List<string>();
+        public List<string> AllRoles { get; set; } = new List<string>();
+        public string SelectedRole { get; set; }
     }
-
 }

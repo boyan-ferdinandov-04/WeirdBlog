@@ -1,0 +1,28 @@
+﻿@model IEnumerable<WeirdBlog.Models.ApplicationUser>
+@{
+    ViewData["Title"] = "User Management";
+}
+
+<h1>User Management</h1>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Email</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var user in Model)
+    {
+        <tr>
+            <td>@user.Email</td>
+            <td>
+                <a class="btn btn-primary" href="@Url.Action("Manage", "UserManagement", new { userId = user.Id })">
+                    Manage Roles
+                </a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

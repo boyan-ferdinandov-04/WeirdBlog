@@ -1,0 +1,22 @@
+﻿@model WeirdBlog.Models.ViewModels.ManageUserViewModel
+@{
+    ViewData["Title"] = "Manage User Roles";
+}
+
+<h1>Manage User Roles</h1>
+
+<div>
+    <h3>@Model.Email</h3>
+    <p>Current Roles: @string.Join(", ", Model.Roles)</p>
+</div>
+
+<form asp-action="UpdateRole" method="post">
+    <input type="hidden" asp-for="UserId" />
+    <div class="form-group">
+        <label asp-for="SelectedRole">Assign Role</label>
+        <select asp-for="SelectedRole" class="form-control" asp-items="@(new SelectList(Model.AllRoles))">
+            <option value="">Select Role</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-success mt-2">Update Role</button>
+</form>
