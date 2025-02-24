@@ -90,7 +90,12 @@ namespace WeirdBlog.Service
 
         public async Task<PaginatedList<Post>> GetPaginatedPostsAsync(int pageIndex, int pageSize, string searchTitle = null, int? selectedCategoryId = null)
         {
-            var query = _context.Posts.Include(p => p.Category).OrderByDescending(p => p.CreatedAt).AsQueryable();
+            // Only include posts that have been approved
+            var query = _context.Posts
+                .Where(p => p.IsApproved)
+                .Include(p => p.Category)
+                .OrderByDescending(p => p.CreatedAt)
+                .AsQueryable();
 
             if (!string.IsNullOrEmpty(searchTitle))
             {
