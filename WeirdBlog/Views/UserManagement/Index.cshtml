@@ -9,6 +9,7 @@
     <thead>
     <tr>
         <th>Email</th>
+        <th>Username</th>
         <th>Actions</th>
     </tr>
     </thead>
@@ -17,6 +18,7 @@
     {
         <tr>
             <td>@user.Email</td>
+            <td>@user.UserName</td>
             <td>
                 <a class="btn btn-primary" href="@Url.Action("Manage", "UserManagement", new { userId = user.Id })">
                     Manage Roles
