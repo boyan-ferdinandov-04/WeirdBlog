@@ -269,9 +269,9 @@ namespace WeirdBlog.Controllers
                 CreatedAt = DateTime.Now
             };
 
-            await _commentService.AddComment(comment);
-
-            return RedirectToAction("Details", new { id = postId });
+            await _commentService.AddComment(comment);           
+            var post = _postService.GetPost(postId);
+            return RedirectToAction("Details", new { slug = post.Slug });
         }
 
         [HttpPost]
@@ -293,8 +293,8 @@ namespace WeirdBlog.Controllers
             };
 
             await _commentService.AddComment(reply);
-
-            return RedirectToAction("Details", new { id = postId });
+            var post = _postService.GetPost(postId);
+            return RedirectToAction("Details", new { slug = post.Slug });
         }
 
         [HttpPost]
@@ -311,8 +311,8 @@ namespace WeirdBlog.Controllers
             {
                 TempData["Success"] = "Comment and its replies have been deleted successfully.";
             }
-
-            return RedirectToAction("Details", new { id = postId });
+            var post = _postService.GetPost(postId);
+            return RedirectToAction("Details", new { slug = post.Slug });
         }
 
         [Authorize(Roles = StaticConstants.Role_Admin)]
