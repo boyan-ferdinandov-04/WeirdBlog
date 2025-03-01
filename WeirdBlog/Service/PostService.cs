@@ -61,6 +61,20 @@ namespace WeirdBlog.Service
             return true;
         }
 
+        public Post? GetPostBySlug(string slug)
+        {
+            return _context.Posts
+                .Include(c => c.Category)
+                .Include(u => u.User)
+                .Include(t => t.Comments)
+                .ThenInclude(c => c.User)
+                .Include(t => t.Comments)
+                .ThenInclude(c => c.Replies)
+                .ThenInclude(r => r.User)
+                .Include(l => l.Likes)
+                .FirstOrDefault(p => p.Slug == slug);
+        }
+
         public async Task<bool> Delete(Guid id)
         {
             var post = await _context.Posts.Include(c => c.Comments).Include(l => l.Likes).FirstOrDefaultAsync(p => p.PostId == id);
@@ -90,7 +104,6 @@ namespace WeirdBlog.Service
 
         public async Task<PaginatedList<Post>> GetPaginatedPostsAsync(int pageIndex, int pageSize, string searchTitle = null, int? selectedCategoryId = null)
         {
-            // Only include posts that have been approved
             var query = _context.Posts
                 .Where(p => p.IsApproved)
                 .Include(p => p.Category)

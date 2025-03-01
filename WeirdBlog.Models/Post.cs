@@ -23,6 +23,10 @@ namespace WeirdBlog.Models
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public bool IsApproved { get; set; } = false;
+
+        [ValidateNever]
+        public string Slug { get; set; }
+
         public int CategoryId { get; set; }
         [ForeignKey("CategoryId")]
         [ValidateNever]
@@ -37,5 +41,6 @@ namespace WeirdBlog.Models
         public ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
         public ICollection<Like> Likes { get; set; } = new List<Like>();
+        
     }
 }

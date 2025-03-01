@@ -12,8 +12,8 @@ using WeirdBlog.DataAccess.Data;
 namespace WeirdBlog.DataAccess.Migrations
 {
     [DbContext(typeof(WeirdBlogDbContext))]
-    [Migration("20250224081738_IsApproved")]
-    partial class IsApproved
+    [Migration("20250228080711_SlugAdded")]
+    partial class SlugAdded
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -338,6 +338,10 @@ namespace WeirdBlog.DataAccess.Migrations
 
                     b.Property<bool>("IsApproved")
                         .HasColumnType("bit");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()

@@ -5,24 +5,24 @@
 namespace WeirdBlog.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class updatedate : Migration
+    public partial class SlugAdded : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<bool>(
-                name: "IsApproved",
+            migrationBuilder.AddColumn<string>(
+                name: "Slug",
                 table: "Posts",
-                type: "bit",
+                type: "nvarchar(max)",
                 nullable: false,
-                defaultValue: false);
+                defaultValue: "");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "IsApproved",
+                name: "Slug",
                 table: "Posts");
         }
     }

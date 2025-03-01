@@ -21,7 +21,7 @@
             <li class="list-group-item">
                 <h4>@post.Title</h4>
                 <p><small>Posted on @post.CreatedAt.ToString("g")</small></p>
-                <a href="@Url.Action("Details", "Post", new { id = post.PostId })">Read more</a>
+                <a href="@Url.Action("Details", "Post", new { slug = post.Slug })">Read more</a>
             </li>
         }
     </ul>

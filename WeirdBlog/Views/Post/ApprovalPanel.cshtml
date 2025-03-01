@@ -25,7 +25,7 @@
             <td>
                 @if (!post.IsApproved)
                 {
-                    <a href="@Url.Action("Details", "Post", new { id = post.PostId })" class="btn btn-info">Read Post</a>
+                        <a asp-action="Details" asp-controller="Post" asp-route-slug="@post.Slug" class="btn btn-info">Read Post</a>
                     <form method="post" asp-action="ApprovePost" asp-route-id="@post.PostId" style="display:inline;">
                         <button type="submit" class="btn btn-success">Approve</button>
                     </form>
@@ -36,7 +36,7 @@
                 else
                 {
                     <span>Approved</span>
-                    <a href="@Url.Action("Details", "Post", new { id = post.PostId })" class="btn btn-info">Read Post</a>
+                        <a href="@Html.ActionLink("Read More", "Details", "Post", new { slug = post.Slug }, null)" class="btn btn-info">Read Post</a>
                 }
             </td>
         </tr>

@@ -3,8 +3,7 @@
     color: #ffffff;
 }
 
-
-    .dark-bg-button:hover, .dark-bg-button:focus {
+.dark-bg-button:hover, .dark-bg-button:focus {
         background-color: #23272b;
         border-color: #23272b;
-    }
+}

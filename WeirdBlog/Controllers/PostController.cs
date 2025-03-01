@@ -44,9 +44,10 @@ namespace WeirdBlog.Controllers
         }
 
         [AllowAnonymous]
-        public IActionResult Details(Guid id)
+        [Route("Post/Details/{slug}")]
+        public IActionResult Details(string slug)
         {
-            var post = _postService.GetPost(id);
+            var post = _postService.GetPostBySlug(slug);
             if (post == null)
             {
                 return NotFound();
@@ -78,9 +79,11 @@ namespace WeirdBlog.Controllers
         [Authorize]
         public IActionResult Create(PostVM postVM)
         {
+            postVM.Post.Slug = SlugHelper.GenerateSlug(postVM.Post.Title);
             if (ModelState.IsValid)
             {
                 postVM.Post.UserId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                postVM.Post.Slug = SlugHelper.GenerateSlug(postVM.Post.Title);
                 _postService.CreatePost(postVM.Post);
                 TempData["success"] = "Post Created Successfully - Pending Approval";
                 return RedirectToAction("Index");
@@ -94,6 +97,7 @@ namespace WeirdBlog.Controllers
 
             return View(postVM);
         }
+
 
         [Authorize]
         public IActionResult Edit(Guid id)
@@ -144,6 +148,7 @@ namespace WeirdBlog.Controllers
                 currentPost.Content = obj.Post.Content;
                 currentPost.ImageUrl = obj.Post.ImageUrl;
                 currentPost.CategoryId = obj.Post.CategoryId;
+                currentPost.Slug = SlugHelper.GenerateSlug(obj.Post.Title);
 
                 _postService.Edit(currentPost);
                 TempData["info"] = "Post edited successfully";
@@ -158,6 +163,7 @@ namespace WeirdBlog.Controllers
 
             return View(obj);
         }
+
 
         [HttpPost]
         [Authorize]
