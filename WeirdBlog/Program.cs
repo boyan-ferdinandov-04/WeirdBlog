@@ -16,7 +16,6 @@ namespace WeirdBlog
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
             builder.Services.AddControllersWithViews();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<IPostService, PostService>();
@@ -28,11 +27,16 @@ namespace WeirdBlog
                 options.LoginPath = "/Identity/Account/Login";
                 options.LogoutPath = "/Identity/Account/Logout";
                 options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+                
+                options.ExpireTimeSpan = TimeSpan.FromDays(30);
+                options.SlidingExpiration = true;
+                options.Cookie.IsEssential = true;
             });
             builder.Services.AddAuthentication().AddGoogle(options =>
             {
                 options.ClientId = "111753696304-s3kgnm6b9eq948n45oig4b2b3grp34if.apps.googleusercontent.com";
                 options.ClientSecret = "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";
+                options.SaveTokens = true; 
             });
 
             builder.Services.AddAuthentication().AddDiscord(options =>
@@ -40,6 +44,7 @@ namespace WeirdBlog
                 options.ClientId = "1282621682812588088";
                 options.ClientSecret = "p-OGCS3kWd5ngGbKw0gMtlHlo8FAyU9N";
                 options.CallbackPath = "/signin-discord";
+                options.SaveTokens = true; 
             });
 
             builder.Services.AddRazorPages();
@@ -65,11 +70,9 @@ namespace WeirdBlog
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
