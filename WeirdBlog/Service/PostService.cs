@@ -44,11 +44,20 @@ namespace WeirdBlog.Service
 
         public async Task<bool> LikePost(Guid postId, Guid userId)
         {
-            var existingLike = _context.Likes.FirstOrDefault(l => l.PostId == postId && l.UserId == userId);
-
+            var existingLike = await _context.Likes
+                .FirstOrDefaultAsync(l => l.PostId == postId && l.UserId == userId);
             if (existingLike != null)
             {
-                return false;
+                _context.Likes.Remove(existingLike);
+                await _context.SaveChangesAsync();
+                return false; // Like removed.
+            }
+
+            var existingDislike = await _context.Dislikes
+                .FirstOrDefaultAsync(d => d.PostId == postId && d.UserId == userId);
+            if (existingDislike != null)
+            {
+                _context.Dislikes.Remove(existingDislike);
             }
 
             var like = new Like
@@ -56,9 +65,10 @@ namespace WeirdBlog.Service
                 PostId = postId,
                 UserId = userId
             };
-            _context.Likes.Add(like);
+
+            await _context.Likes.AddAsync(like);
             await _context.SaveChangesAsync();
-            return true;
+            return true; 
         }
 
         public Post? GetPostBySlug(string slug)
@@ -72,6 +82,7 @@ namespace WeirdBlog.Service
                 .ThenInclude(c => c.Replies)
                 .ThenInclude(r => r.User)
                 .Include(l => l.Likes)
+                .Include(d => d.Dislikes)
                 .FirstOrDefault(p => p.Slug == slug);
         }
 
@@ -140,9 +151,37 @@ namespace WeirdBlog.Service
                 .ThenInclude(c => c.Replies)
                 .ThenInclude(r => r.User) 
                 .Include(l => l.Likes)
+                .Include(d => d.Dislikes)
                 .FirstOrDefault(p => p.PostId == id);
         }
 
+        public async Task<bool> DislikePost(Guid postId, Guid userId)
+        {
+            var existingDislike = await _context.Dislikes
+                .FirstOrDefaultAsync(d => d.PostId == postId && d.UserId == userId);
+            if (existingDislike != null)
+            {
+                _context.Dislikes.Remove(existingDislike);
+                await _context.SaveChangesAsync();
+                return false; 
+            }
 
+            var existingLike = await _context.Likes
+                .FirstOrDefaultAsync(l => l.PostId == postId && l.UserId == userId);
+            if (existingLike != null)
+            {
+                _context.Likes.Remove(existingLike);
+            }
+
+            var dislike = new Dislike
+            {
+                PostId = postId,
+                UserId = userId
+            };
+
+            await _context.Dislikes.AddAsync(dislike);
+            await _context.SaveChangesAsync();
+            return true; 
+        }
     }
 }

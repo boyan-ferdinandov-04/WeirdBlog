@@ -30,6 +30,12 @@
                                     <i class="bi bi-hand-thumbs-up-fill"></i> Like (@Model.Likes.Count)
                                 </button>
                             </form>
+                            <form asp-controller="Post" asp-action="Dislike" method="post" style="display:inline;">
+                                <input type="hidden" name="postId" value="@Model.PostId" />
+                                <button type="submit" class="btn btn-outline-danger btn-sm">
+                                    <i class="bi bi-hand-thumbs-down-fill"></i> Dislike (@Model.Dislikes?.Count)
+                                </button>
+                            </form>
                         </small>
 
                     </div>

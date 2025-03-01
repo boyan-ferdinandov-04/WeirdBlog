@@ -42,5 +42,6 @@ namespace WeirdBlog.Models
 
         public ICollection<Like> Likes { get; set; } = new List<Like>();
         
+        public ICollection<Dislike> Dislikes { get; set; } = new List<Dislike>();
     }
 }

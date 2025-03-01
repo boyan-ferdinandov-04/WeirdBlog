@@ -166,9 +166,13 @@ namespace WeirdBlog.Controllers
 
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> Like(Guid postId)
         {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Redirect("/Identity/Account/Login");
+            }
             var currentUserId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             var post = _postService.GetPost(postId);
 
@@ -185,10 +189,40 @@ namespace WeirdBlog.Controllers
             }
             else
             {
-                TempData["info"] = "You already liked this post.";
+                TempData["info"] = "You removed the like of this post.";
             }
 
-            return RedirectToAction("Details", new { id = postId });
+            return RedirectToAction("Details", new { slug = post.Slug });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Dislike(Guid postId)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Redirect("/Identity/Account/Login");
+            }
+            var currentUserId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var post = _postService.GetPost(postId);
+
+            if (post == null)
+            {
+                return NotFound();
+            }
+
+            var dislikeAdded = await _postService.DislikePost(postId, currentUserId);
+
+            if (dislikeAdded)
+            {
+                TempData["info"] = "You disliked the post.";
+            }
+            else
+            {
+                TempData["info"] = "You removed dislike.";
+            }
+
+            return RedirectToAction("Details", new { slug = post.Slug });
         }
 
 
