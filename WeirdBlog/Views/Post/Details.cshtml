@@ -72,19 +72,16 @@
 
                     @if (!User.Identity.IsAuthenticated)
                     {
-                        <div class="login-prompt card mb-4">
-                            <div class="card-body text-center">
-                                <p class="mb-3">Want to join the conversation?</p>
-                                <div class="d-flex justify-content-center gap-3">
-                                    <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-primary">
-                                        <i class="bi bi-box-arrow-in-right me-2"></i>Log in
-                                    </a>
+                        
+                          <p class="mb-3">Want to join the conversation?</p>
+                          <div class="d-flex justify-content-center gap-3">
+                              <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-primary">
+                                  <i class="bi bi-box-arrow-in-right me-2"></i>Log in
+                                  x</a>
                                     <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-outline-secondary">
                                         <i class="bi bi-person-plus me-2"></i>Register
                                     </a>
-                                </div>
-                            </div>
-                        </div>
+                          </div>
                     }
 
                     @if (Model.Comments?.Any() ?? false)
