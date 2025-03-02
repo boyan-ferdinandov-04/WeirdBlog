@@ -7,114 +7,195 @@
     ViewData["Title"] = Model.Title;
 }
 <link rel="stylesheet" href="~/css/details.css">
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-md-8 offset-md-2">
-            <div class="card">
-                <div class="card-body">
-                    <h1 class="card-title text-center">@Model.Title</h1>
-                    <div class="text-muted text-center mb-3">
-                        <small>Posted on @Model.CreatedAt.ToString("g")</small> |
-                        <small>Category: @Model.Category.Name</small> |
 
-                        <small>
-                            Written by:
-                            <a href="@Url.Action("Details", "User", new { userId = Model.User.Id })">
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <article class="blog-post">
+                <header class="mb-5 text-center">
+                    <h1 class="post-title">@Model.Title</h1>
+                    <div class="post-meta d-flex align-items-center justify-content-center gap-3 my-4 flex-wrap">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-calendar"></i>
+                            <time>@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</time>
+                        </div>
+                        <span class="text-muted">|</span>
+                        <a asp-controller="Post" asp-action="Index" asp-route-selectedCategoryId="@Model.CategoryId" class="text-decoration-none">
+                            @Model.Category.Name
+                        </a>
+                        <span class="text-muted">|</span>
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-person-circle"></i>
+                            <a href="@Url.Action("Details", "User", new { userId = Model.User.Id })"
+                               class="text-decoration-none">
                                 @Model.User.UserName
                             </a>
-                        </small> |
-                        <small>
-                            <form asp-controller="Post" asp-action="Like" method="post" style="display:inline;">
-                                <input type="hidden" name="postId" value="@Model.PostId" />
-                                <button type="submit" class="btn btn-outline-success btn-sm">
-                                    <i class="bi bi-hand-thumbs-up-fill"></i> Like (@Model.Likes.Count)
-                                </button>
-                            </form>
-                            <form asp-controller="Post" asp-action="Dislike" method="post" style="display:inline;">
-                                <input type="hidden" name="postId" value="@Model.PostId" />
-                                <button type="submit" class="btn btn-outline-danger btn-sm">
-                                    <i class="bi bi-hand-thumbs-down-fill"></i> Dislike (@Model.Dislikes?.Count)
-                                </button>
-                            </form>
-                        </small>
-
+                        </div>
                     </div>
-                    <hr />
 
-                    @if (!string.IsNullOrEmpty(Model.ImageUrl))
-                    {
-                        <div class="text-center mb-4">
-                            <img src="@Model.ImageUrl" class="img-fluid" alt="Post image" style="max-height: 250px; object-fit: cover;">
-                        </div>
-                    }
-
-                    <p class="card-text" style="white-space: pre-wrap;">@Html.Raw(Model.Content)</p>
-                </div>
-            </div>
-
-            <hr />
-            <h3>Comments(@Model.Comments.Count)</h3>
-
-            @if (Model.Comments != null && Model.Comments.Any())
-            {
-                @foreach (var comment in Model.Comments.Where(c => c.ParentCommentId == null))
-                {
-                    <div class="comment mt-4">
-                        <strong>@comment.User.UserName</strong> said:
-                        <p>@comment.Content</p>
-                        <small class="text-muted">@comment.CreatedAt.ToString("g")</small>
-
-                        @if (User.IsInRole(StaticConstants.Role_Admin) || User.FindFirstValue(ClaimTypes.NameIdentifier) == comment.UserId.ToString())
-                        {
-                            <form asp-action="DeleteCommentWithReplies" method="post" style="display:inline;">
-                                <input type="hidden" name="commentId" value="@comment.CommentId" />
-                                <input type="hidden" name="postId" value="@Model.PostId" />
-                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                            </form>
-                        }
-
-                        
-
-                        <div class="ml-4">
-                            @if (User.Identity is { IsAuthenticated: true })
-                            {
-                                @foreach (var reply in comment.Replies)
-                                {
-                                    <div class="reply mt-3" id="reply">
-                                        <strong>@reply.User.UserName</strong> replied to @comment.User:
-                                        <p>@reply.Content</p>
-                                        <small class="text-muted">@reply.CreatedAt.ToString("g")</small>
-                                    </div>
-                                }
-                            }
-                        </div>
-
-                        <form id="reply-form-@comment.CommentId" asp-action="AddReply" method="post" class="mt-3">
-                            <input type="hidden" name="commentId" value="@comment.CommentId" />
+                    <div class="reactions d-flex justify-content-center gap-3 mb-4">
+                        <form asp-controller="Post" asp-action="Like" method="post">
                             <input type="hidden" name="postId" value="@Model.PostId" />
-                            <textarea name="content" class="form-control" rows="2" required></textarea>
-                            <button type="submit" class="btn btn-outline-success btn-sm mt-2">Submit Reply</button>
+                            <button type="submit" class="btn btn-outline-success d-flex align-items-center gap-2">
+                                <i class="bi bi-hand-thumbs-up"></i>
+                                <span class="count">@Model.Likes.Count</span>
+                            </button>
                         </form>
+                        <form asp-controller="Post" asp-action="Dislike" method="post">
+                            <input type="hidden" name="postId" value="@Model.PostId" />
+                            <button type="submit" class="btn btn-outline-danger d-flex align-items-center gap-2">
+                                <i class="bi bi-hand-thumbs-down"></i>
+                                <span class="count">@(Model.Dislikes?.Count ?? 0)</span>
+                            </button>
+                        </form>
+                    </div>
+                </header>
+
+                @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                {
+                    <div class="text-center mb-4">
+                        <img src="@Model.ImageUrl" class="img-fluid" alt="Post image" style="max-height: 450px; object-fit: cover;">
                     </div>
                 }
 
-            }
-            else
-            {
-                <p>No comments yet. Be the first to comment!</p>
-            }
+                <section class="post-content mb-5">
+                    <div class="content-body">
+                        @Html.Raw(Model.Content)
+                    </div>
+                </section>
 
-            <hr />
-            <h4>Add a Comment</h4>
-            <form asp-action="AddComment" method="post">
-                <input type="hidden" name="PostId" value="@Model.PostId" />
-                <div class="form-group">
-                    <textarea name="Content" class="form-control" rows="4" required></textarea>
-                </div>
-                <button type="submit" class="btn btn-outline-success">Submit</button>
-            </form>
+                <section class="comments">
+                    <h3 class="mb-4">
+                        <i class="bi bi-chat-text me-2"></i>
+                        Comments (@Model.Comments.Count)
+                    </h3>
+
+                    @if (!User.Identity.IsAuthenticated)
+                    {
+                        <div class="login-prompt card mb-4">
+                            <div class="card-body text-center">
+                                <p class="mb-3">Want to join the conversation?</p>
+                                <div class="d-flex justify-content-center gap-3">
+                                    <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-primary">
+                                        <i class="bi bi-box-arrow-in-right me-2"></i>Log in
+                                    </a>
+                                    <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-outline-secondary">
+                                        <i class="bi bi-person-plus me-2"></i>Register
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    @if (Model.Comments?.Any() ?? false)
+                    {
+                        <div class="comments-list">
+                            @foreach (var comment in Model.Comments.Where(c => c.ParentCommentId == null))
+                            {
+                                <div class="comment-card card mb-3">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center gap-3 mb-3">
+                                            <div class="user-avatar">
+                                                <i class="bi bi-person-circle fs-5"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-0">@comment.User.UserName</h6>
+                                                <small class="text-muted">@comment.CreatedAt.ToString("MMM dd, yyyy h:mm tt")</small>
+                                            </div>
+                                        </div>
+                                        <p class="mb-3">@comment.Content</p>
+
+                                        @if (User.Identity.IsAuthenticated && (User.IsInRole(StaticConstants.Role_Admin) || User.FindFirstValue(ClaimTypes.NameIdentifier) == comment.UserId.ToString()))
+                                        {
+                                            <form asp-action="DeleteCommentWithReplies" method="post">
+                                                <input type="hidden" name="commentId" value="@comment.CommentId" />
+                                                <input type="hidden" name="postId" value="@Model.PostId" />
+                                                <button type="submit" class="btn btn-link text-danger btn-sm p-0">
+                                                    <i class="bi bi-trash me-1"></i>Delete
+                                                </button>
+                                            </form>
+                                        }
+
+                                        <div class="replies ms-4 mt-3">
+                                            @foreach (var reply in Model.Comments.Where(c => c.ParentCommentId == comment.CommentId))
+                                            {
+                                                <div class="reply-card card mb-2">
+                                                    <div class="card-body">
+                                                        <div class="d-flex align-items-center gap-3 mb-2">
+                                                            <div class="user-avatar">
+                                                                <i class="bi bi-person-circle fs-6"></i>
+                                                            </div>
+                                                            <div>
+                                                                <h6 class="mb-0">@reply.User.UserName</h6>
+                                                                <small class="text-muted">@reply.CreatedAt.ToString("MMM dd, yyyy h:mm tt")</small>
+                                                            </div>
+                                                        </div>
+                                                        <p class="mb-0">@reply.Content</p>
+
+                                                        @if (User.Identity.IsAuthenticated && (User.IsInRole(StaticConstants.Role_Admin) || User.FindFirstValue(ClaimTypes.NameIdentifier) == reply.UserId.ToString()))
+                                                        {
+                                                            <form asp-action="DeleteCommentWithReplies" method="post" class="mt-2">
+                                                                <input type="hidden" name="commentId" value="@reply.CommentId" />
+                                                                <input type="hidden" name="postId" value="@Model.PostId" />
+                                                                <button type="submit" class="btn btn-link text-danger btn-sm p-0">
+                                                                    <i class="bi bi-trash me-1"></i>Delete
+                                                                </button>
+                                                            </form>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+
+                                        @if (User.Identity.IsAuthenticated)
+                                        {
+                                            <form asp-action="AddReply" method="post" class="mt-3">
+                                                <input type="hidden" name="commentId" value="@comment.CommentId" />
+                                                <input type="hidden" name="postId" value="@Model.PostId" />
+                                                <div class="input-group">
+                                                    <textarea name="content" class="form-control"
+                                                              placeholder="Write a reply..." rows="2" required></textarea>
+                                                    <button type="submit" class="btn btn-primary">
+                                                        <i class="bi bi-send"></i>
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info">
+                            No comments yet. Be the first to share your thoughts!
+                        </div>
+                    }
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <div class="add-comment mt-5">
+                            <h4 class="mb-4">
+                                <i class="bi bi-pencil-square me-2"></i>
+                                Add a Comment
+                            </h4>
+                            <form asp-action="AddComment" method="post">
+                                <input type="hidden" name="PostId" value="@Model.PostId" />
+                                <div class="form-floating mb-3">
+                                    <textarea name="Content" class="form-control"
+                                              placeholder="Write your comment here..."
+                                              style="height: 120px" required></textarea>
+                                    <label>Your comment...</label>
+                                </div>
+                                <button type="submit" class="btn btn-primary px-4">
+                                    <i class="bi bi-send me-2"></i>Post Comment
+                                </button>
+                            </form>
+                        </div>
+                    }
+                </section>
+            </article>
         </div>
     </div>
 </div>
-
-

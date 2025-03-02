@@ -23,7 +23,128 @@
     padding-left: 10px;
     padding-right: 10px;
     border-left: 2px solid #ccc;
-    text-align: left; 
+    text-align: left;
 }
 
+.post-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+}
 
+.post-meta {
+    font-size: 0.95rem;
+    color: #6c757d;
+}
+
+.post-image {
+    text-align: center;
+    margin: 1.5rem 0;
+}
+
+.fixed-size-image {
+    width: 400px;
+    height: 250px;
+    object-fit: cover;
+    margin: 0 auto;
+    display: block;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.content-body {
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
+.content-body p {
+        margin-bottom: 1.5rem;
+}
+
+.content-body img {
+        width: 400px;
+        height: 250px;
+        object-fit: cover;
+        margin: 1rem auto;
+        display: block;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.comment-card {
+    border-left: 3px solid #0d6efd;
+    transition: transform 0.2s ease;
+}
+
+.comment-card:hover {
+    transform: translateX(5px);
+}
+
+.reply-card {
+    border-left: 2px solid #6c757d;
+    background-color: rgba(108,117,125,0.05);
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    background-color: #f8f9fa;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.reactions .btn {
+    padding: 0.5rem 1rem;
+    transition: all 0.2s ease;
+}
+
+    .reactions .btn:hover .count {
+        color: inherit;
+    }
+
+.count {
+    font-weight: 500;
+}
+
+.form-floating textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.login-prompt {
+    border-left: 3px solid #6c757d;
+    background-color: #f8f9fa;
+    margin-bottom: 2rem;
+}
+
+    .login-prompt .card-body {
+        padding: 1.5rem;
+    }
+
+@media (max-width: 770px) {
+    .post-title {
+        font-size: 2rem;
+    }
+
+    .content-body {
+        font-size: 1rem;
+    }
+
+        .fixed-size-image,
+        .content-body img {
+            width: 300px;
+            height: 200px;
+        }
+}
+
+@media (max-width: 480px) {
+    .fixed-size-image,
+    .content-body img {
+        width: 100%;
+        height: auto;
+        max-height: 250px;
+    }
+}
