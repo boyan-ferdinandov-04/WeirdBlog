@@ -2,21 +2,85 @@
 @{
     ViewData["Title"] = "Manage User Roles";
 }
-
-<h1>Manage User Roles</h1>
-
-<div>
-    <h3>@Model.Email</h3>
-    <p>Current Roles: @string.Join(", ", Model.Roles)</p>
-</div>
-
-<form asp-action="UpdateRole" method="post">
-    <input type="hidden" asp-for="UserId" />
-    <div class="form-group">
-        <label asp-for="SelectedRole">Assign Role</label>
-        <select asp-for="SelectedRole" class="form-control" asp-items="@(new SelectList(Model.AllRoles))">
-            <option value="">Select Role</option>
-        </select>
+<div class="container py-4">
+    <div class="row mb-4">
+        <div class="col">
+            <h1><i class="bi bi-person-gear me-2"></i>Manage User Roles</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-controller="UserManagement" asp-action="Index">Users</a></li>
+                    <li class="breadcrumb-item active">@Model.Email</li>
+                </ol>
+            </nav>
+        </div>
     </div>
-    <button type="submit" class="btn btn-success mt-2">Update Role</button>
-</form>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card mb-4 border-dark-subtle">
+                <div class="card-header bg-body-tertiary">
+                    <h5 class="card-title mb-0">User Information</h5>
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title text-center">@Model.Email</h4>
+                    <hr class="border-secondary" />
+                    <div class="mb-2">
+                        <strong><i class="bi bi-shield-lock me-1"></i>Current Roles:</strong>
+                        <div class="mt-2">
+                            @foreach (var role in Model.Roles)
+                            {
+                                <span class="badge text-bg-primary me-1 mb-1">@role</span>
+                            }
+                            @if (!Model.Roles.Any())
+                            {
+                                <span class="text-body-secondary">No roles assigned</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card border-dark-subtle">
+                <div class="card-header bg-body-tertiary">
+                    <h5 class="card-title mb-0">Role Management</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="UpdateRole" method="post">
+                        <input type="hidden" asp-for="UserId" />
+                        
+                        <div class="mb-4">
+                            <label class="form-label">Assign Roles</label>
+                            <div class="border rounded p-3 bg-body-tertiary">
+                                @foreach (var role in Model.AllRoles)
+                                {
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" 
+                                               type="checkbox" 
+                                               name="SelectedRoles" 
+                                               value="@role" 
+                                               id="role_@role"
+                                               @(Model.Roles.Contains(role) ? "checked" : "") />
+                                        <label class="form-check-label" for="role_@role">
+                                            @role
+                                        </label>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-end">
+                            <a asp-action="Index" class="btn btn-outline-secondary me-2">
+                                <i class="bi bi-arrow-left me-1"></i>Back to Users
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-save me-1"></i>Update Roles
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

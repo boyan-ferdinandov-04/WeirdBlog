@@ -65,19 +65,25 @@ namespace WeirdBlog.Controllers
             }
 
             var currentRoles = await _userManager.GetRolesAsync(user);
+            
             await _userManager.RemoveFromRolesAsync(user, currentRoles);
-
-            string newRole = model.SelectedRole;
-
-            if (!await _roleManager.RoleExistsAsync(newRole))
+            
+            if (model.SelectedRoles != null && model.SelectedRoles.Any())
             {
-                var role = new IdentityRole<Guid> { Name = newRole };
-                await _roleManager.CreateAsync(role);
+                foreach (var roleName in model.SelectedRoles)
+                {
+                    if (!await _roleManager.RoleExistsAsync(roleName))
+                    {
+                        var role = new IdentityRole<Guid> { Name = roleName };
+                        await _roleManager.CreateAsync(role);
+                    }
+                    await _userManager.AddToRoleAsync(user, roleName);
+                }
             }
-            await _userManager.AddToRoleAsync(user, newRole);
-            TempData["success"] = "User role updated successfully.";
-
+            
+            TempData["success"] = "User roles updated successfully.";
             return RedirectToAction("Index");
         }
+
     }
 }

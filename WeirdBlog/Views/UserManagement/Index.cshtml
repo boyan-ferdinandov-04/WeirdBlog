@@ -2,29 +2,117 @@
 @{
     ViewData["Title"] = "User Management";
 }
+<partial name="_Notification"/>
+<div class="container-fluid mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">User Management</h3>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input type="text" id="searchInput" class="form-control" placeholder="Search users...">
+                        <button class="btn btn-primary" type="button">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-6 text-end">
+                    <span class="text-muted">Total users: @Model.Count()</span>
+                </div>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="table table-hover" id="usersTable">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Email</th>
+                            <th>Username</th>
+                            <th class="text-center">Status</th>
+                            <th>Manage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar rounded-circle bg-light text-primary me-2 d-inline-flex align-items-center justify-content-center" 
+                                         style="width: 32px; height: 32px; font-weight: bold;">
+                                        @(user.UserName?.Substring(0, 1).ToUpper() ?? "?")
+                                    </div>
+                                    <span>@user.Email</span>
+                                </div>
+                            </td>
+                            <td>@user.UserName</td>
+                            <td class="text-center">
+                                @if (user.EmailConfirmed)
+                                {
+                                    <span class="badge bg-success">Active</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning text-dark">Pending</span>
+                                }
+                            </td>
+                            <td>
+                                <a class="btn btn-sm btn-primary" href="@Url.Action("Manage", "UserManagement", new { userId = user.Id })">
+                                    <i class="bi bi-gear-fill"></i> Manage Roles
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+            
+            @if (!Model.Any())
+            {
+                <div class="text-center py-5">
+                    <i class="bi bi-people text-muted" style="font-size: 3rem;"></i>
+                    <h5 class="mt-3">No users found</h5>
+                    <p class="text-muted">There are no users to display at this time.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
 
-<h1>User Management</h1>
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">Delete User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete user <strong id="deleteUserName"></strong>?</p>
+                <p class="text-danger">This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form id="deleteUserForm" method="post">
+                    <input type="hidden" id="deleteUserId" name="userId" />
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
-<table class="table">
-    <thead>
-    <tr>
-        <th>Email</th>
-        <th>Username</th>
-        <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    @foreach (var user in Model)
-    {
-        <tr>
-            <td>@user.Email</td>
-            <td>@user.UserName</td>
-            <td>
-                <a class="btn btn-primary" href="@Url.Action("Manage", "UserManagement", new { userId = user.Id })">
-                    Manage Roles
-                </a>
-            </td>
-        </tr>
-    }
-    </tbody>
-</table>
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $("#searchInput").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#usersTable tbody tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+        
+    </script>
+}
