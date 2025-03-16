@@ -315,6 +315,43 @@ namespace WeirdBlog.Controllers
             return RedirectToAction("Details", new { slug = post.Slug });
         }
 
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> EditComment(Guid commentId, string content, Guid postId)
+        {
+            var post = _postService.GetPost(postId);
+            if (post == null)
+            {
+                return NotFound();
+            }
+
+            var comment = post.Comments.FirstOrDefault(c => c.CommentId == commentId);
+            if (comment == null)
+            {
+                return NotFound();
+            }
+
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            if (comment.UserId != userId && !User.IsInRole(StaticConstants.Role_Admin))
+            {
+                TempData["error"] = "You don't have permission to edit this comment.";
+                return RedirectToAction("Details", new { slug = post.Slug });
+            }
+
+            var success = await _commentService.EditComment(commentId, content);
+            if (success)
+            {
+                TempData["success"] = "Comment updated successfully.";
+            }
+            else
+            {
+                TempData["error"] = "Failed to update comment.";
+            }
+
+            // Redirect back to post
+            return RedirectToAction("Details", new { slug = post.Slug });
+        }
+
         [Authorize(Roles = StaticConstants.Role_Admin)]
         public async Task<IActionResult> ApprovalPanel(int pageIndex = 1, int pageSize = 5)
         {

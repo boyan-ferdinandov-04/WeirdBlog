@@ -10,6 +10,8 @@ namespace WeirdBlog.Service.IService
 
         Task<bool> DeleteCommentWithReplies(Guid commentId);
 
+        Task<bool> EditComment(Guid commentId, string content);
+
         List<Comment> GetAllComments(Guid postId);
     }
 }

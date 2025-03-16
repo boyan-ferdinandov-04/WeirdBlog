@@ -56,6 +56,18 @@ namespace WeirdBlog.Service
             return true;
         }
 
+        public async Task<bool> EditComment(Guid commentId, string content)
+        {
+            var comment = await _dbContext.Comments.FindAsync(commentId);
+            if (comment == null)
+            {
+                return false;
+            }
+            
+            comment.Content = content;
+            await _dbContext.SaveChangesAsync();
+            return true;
+        }
 
         public List<Comment> GetAllComments(Guid postId)
         {
